@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tests</title>
+  <link rel="stylesheet" href="stylesheets/main.css">
+</head>
+<body>
+  <div id="application">
+    <center>A demo of drawing on a Canvas. (From <a href="http://arunjitsingh.github.com/projects/draw-comic/index.html">arunjitsingh.github.com/projects/draw-comic</a>)</center>
+    <canvas id="canvas" width="800" height="600">
+      You need a modern web-browser to use this application.
+      <ul>
+        <li><a href="http://chrome.google.com">Chrome</a></li>
+        <li><a href="http://www.apple.com/safari">Safari</a></li>
+        <li><a href="http://www.getfirefox.com">Firefox</a></li>
+        <li><a href="http://www.webkit.org">WebKit</a> nightly: bleeding edge of browser technology</li>
+      </ul>
+    </canvas>
+    <div id="app-toolbar">
+      <span id="status"></span>
+    </div>
+  </div>
+  <div id="load-box" style="display:none"></div>
+  <script src="javascripts/vendor/jquery/min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="javascripts/vendor/jquery/sexy-min.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript" charset="utf-8">
+Sexy
+  .js('javascripts/jquery.plugins.js');
+var GLOBAL = {debug:false};
+$(document).ready(function() {
+  var doc = document;
+  var statusBar = doc.getElementById("status");
+  var canvas = doc.getElementById('canvas');
+  var context = canvas.getContext("2d");
+
+  var isDrawing = false;
+  context.scale(1, 1);
+  context.strokeStyle = "#000000";
+
+  var mouseDown = function(evt) {
+    evt.preventDefault();
+    if (GLOBAL.debug) {
+      console.log(evt);
+      console.log("MouseDown");
+    }
+    isDrawing = true; 
+    context.beginPath();
+    var p = $(canvas).mouse(evt),
+      x = p.x,
+      y = p.y;
+    context.moveTo(x, y);
+    statusBar.innerHTML = x + "," + y;
+  };
+  
+  var mouseMove = function(evt) {
+    evt.preventDefault();
+    if (GLOBAL.debug) {
+      console.log(evt);
+      console.log("MouseMove");
+    }
+    var p = $(canvas).mouse(evt),
+      x = p.x,
+      y = p.y;
+    if (isDrawing) {
+      context.lineTo(x, y);
+      statusBar.innerHTML = x + ":" + y;
+      context.stroke();
+    } else {
+      statusBar.innerHTML = x + "," + y;
+    }
+  };
+  
+  var mouseUp = function(evt) {
+    evt.preventDefault();
+    if (GLOBAL.debug) {
+      console.log(evt);
+      console.log("MouseUp");
+    }
+    isDrawing = false;
+    var p = $(canvas).mouse(evt),
+      x = p.x,
+      y = p.y;
+    statusBar.innerHTML = x + "," + y;
+  };
+
+  canvas.addEventListener('mousedown', mouseDown, false);
+  canvas.addEventListener('mouseup', mouseUp, false);
+  canvas.addEventListener('mousemove', mouseMove, false);
+  console.log('application ready');
+});
+  </script>
+</body>
+</html>
