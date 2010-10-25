@@ -1,0 +1,85 @@
+html, body {
+  margin:0; padding:0;
+  width:100%;height:100%;
+}
+a, a:hover, a:link, a:active, a:visited {
+  text-decoration:none;
+  color:inherit;
+  font-family: "Menlo", monospace;
+  font-weight: bolder;
+}
+a:hover {
+  color: #3645DB;
+}
+a:active {
+  color: #BD5463;
+}
+#application {
+  position: absolute;
+  width: 800px; left: 50%; margin-left: -400px;
+  height: 650px; top: 50%; margin-top: -325px;
+}
+#canvas {
+  background-color: #FFFFFF;
+  cursor: crosshair;
+  padding: 0px; margin: 0px;
+  /*border: 2px solid black;*//*screws up mouse positioning by 2px*/
+  -webkit-box-shadow: 0 0 5px #000;
+  -moz-box-shadow: 0 0 5px #000;
+}
+#app-toolbar {
+  width: 790px;
+  height: 40px;
+  margin: 0px; padding: 10px 10px 0px 0px;
+  background-color: rgba(12, 12, 12, 0.6);
+  border: 2px solid black;
+}
+.clickable {
+  cursor: pointer;
+}
+#button-bar {
+  position: absolute;
+  margin:5px 0px 0px 10px;
+}
+#button-bar .button {
+  padding: 5px;
+  font-size: 12px;
+  font-family: "Lucida Grande", sans-serif;
+  letter-spacing: none;
+  text-align: center;
+  margin:0px;
+  min-width: 90px;
+  border: 2px solid white;
+  border-left: 2px solid white;
+  border-right: none;
+  background-color: #23AB29;
+  background: -webkit-gradient(linear, left top, left bottom,
+                               from(#9AAB29),
+                               to(#677818));
+}
+#button-bar .button:hover {
+  color: #FFFFFF;
+  background-color: #36DA40;
+  background: -webkit-gradient(linear, left top, left bottom,
+                               from(#ABBC3A),
+                               to(#788929));
+}
+#button-bar .button:active {
+  color: #777777;
+  background-color:#23AB29;
+  background: -webkit-gradient(linear, left top, left bottom,
+                               from(#78893A),
+                               to(#9AAB29));
+}
+#button-bar .button:first-of-type {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+#button-bar .button:last-of-type {
+  border-right: 2px solid white;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+#status {
+  float: right;
+}
