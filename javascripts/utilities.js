@@ -32,8 +32,7 @@ function isEmpty(o) {
 
 if (!String.prototype.entityify) {
   String.prototype.entityify = function () {
-    return this.replace(/&/g, "&amp;").replace(/</g,
-      "&lt;").replace(/>/g, "&gt;");
+    return this.replace(/&/g, "&amp;").replace(/</g,"&lt;").replace(/>/g, "&gt;");
   };
 }
 
@@ -89,5 +88,65 @@ if (!String.prototype.supplant) {
 if (!String.prototype.trim) {
   String.prototype.trim = function () {
     return this.replace(/^\s*(\S*(?:\s+\S+)*)\s*$/, "$1");
+  };
+}
+
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+if (!String.prototype.camelize) {
+  String.prototype.camelize = function camelize() {
+    var ret = this.replace(/([\s|\-|\_|\n])([^\s|\-|\_|\n]?)/g, 
+      function(str,separater,character) { 
+        return (character) ? character.toUpperCase() : '' ;
+      }) ;
+    var first = ret.charAt(0), lower = first.toLowerCase() ;
+    return (first !== lower) ? (lower + ret.slice(1)) : ret ;
+  };
+}
+
+if (!String.prototype.trim) {
+  String.prototype.trim = function trim() {
+    return this.replace(/^\s+|\s+$/g,"");
+  } ;
+}
+
+if (!String.prototype.fmt) {
+  String.prototype.fmt = function fmt() {
+    // first, replace any ORDERED replacements.
+    var args = arguments;
+    var idx  = 0; // the current index for non-numerical replacements
+    return this.replace(/%@([0-9]+)?/g, function(s, argIndex) {
+      argIndex = (argIndex) ? parseInt(argIndex,0)-1 : idx++ ;
+      s =args[argIndex];
+      return ((s===null) ? '(null)' : (s===undefined) ? '' : s).toString(); 
+    }) ;
+  } ;
+}
+
+if (!Array.prototype.uniq) {
+  Array.prototype.uniq = function uniq() {
+    var ret = [], len = this.length, item, idx ;
+    for(idx=0;idx<len;idx++) {
+      item = this[idx];
+      if (ret.indexOf(item) < 0) ret.push(item);
+    }
+    return ret ;
+  };
+}
+
+if (!String.prototype.w) {
+  String.prototype.w = function w() { 
+    var ary = [], ary2 = this.split(' '), len = ary2.length ;
+    for (var idx=0; idx<len; ++idx) {
+      var str = ary2[idx] ;
+      if (str.length !== 0) ary.push(str) ; // skip empty strings
+    }
+    return ary ;
+  };
+}
+// My own, Copyright ©2010, Arunjit Singh
+if (!String.prototype.truncate) {
+  String.prototype.truncate = function truncate(l) {
+    return this.slice(0, l);
   };
 }
