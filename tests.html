@@ -3,6 +3,11 @@
 <head>
   <title>Tests</title>
   <link rel="stylesheet" href="stylesheets/main.css">
+  <style>
+.c-object {
+  position: absolute; top:0; left:0;
+}
+  </style>
 </head>
 <body>
   <div id="application">
@@ -20,11 +25,14 @@
     </div>
     <div id="app-toolbar">
       <span id="status"></span>
+      <a href="javascript:addObject('Arunjit');">{Add Object}</a>
+      <a href="javascript:flattenCanvas();">{Flatten}</a>
     </div>
   </div>
   <div id="load-box" style="display:none"></div>
   <script src="javascripts/utilities-min.js" type="text/javascript" charset="utf-8"></script>
   <script src="javascripts/vendor/jquery/min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="javascripts/vendor/jquery/ui-all-min.js" type="text/javascript" charset="utf-8"></script>
   <script src="javascripts/vendor/jquery/sexy-min.js" type="text/javascript" charset="utf-8"></script>
   <script type="text/javascript" charset="utf-8">
 Sexy

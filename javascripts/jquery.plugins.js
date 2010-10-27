@@ -3,6 +3,7 @@
   * Get the mouse position relative to the element
   */
   if (typeof($.mouse) !== 'undefined') {$._oldMouse = $.mouse;}
+  if (typeof($.fn.mouse) !== 'undefined') {$.fn._oldMouse = $.fn.mouse;}
   $.mouse = function(evt, elt) {
     if (typeof(evt)==='undefined'){throw new Error("Invalid MouseEvent");}
     var x,              // x-coord
