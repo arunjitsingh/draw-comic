@@ -6,8 +6,6 @@ DRAW•COMIC
 * IMPLEMENTATION PLAN
 * RAPID PROTOTYPING
 
-----------------------
-
 ##Requirements
 1. Draw bitmaps (+colors, +eraser, +undo)
 2. Import images (`/(jpe?g|png|gif|bmp)/ig`)
@@ -25,11 +23,7 @@ DRAW•COMIC
 6. View imported files
 7. View saved projects
 
-----------------------
-
-NoSQL - NoSchema Object (JSON) store
-------------------------------------
-(Database: [CouchDB][couchone])
+NoSQL - NoSchema Object (JSON) store (Database: [CouchDB][couchone])
 ------------------------------------
 
     [
