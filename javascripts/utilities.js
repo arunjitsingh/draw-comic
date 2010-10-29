@@ -104,11 +104,11 @@ if (!String.prototype.camelize) {
   };
 }
 
-if (!String.prototype.trim) {
-  String.prototype.trim = function trim() {
-    return this.replace(/^\s+|\s+$/g,"");
-  } ;
-}
+// if (!String.prototype.trim) {
+//   String.prototype.trim = function trim() {
+//     return this.replace(/^\s+|\s+$/g,"");
+//   } ;
+// }
 
 if (!String.prototype.fmt) {
   String.prototype.fmt = function fmt() {
@@ -144,9 +144,47 @@ if (!String.prototype.w) {
     return ary ;
   };
 }
+
 // My own, Copyright ©2010, Arunjit Singh
+if (!Number.partition) {
+  Number.partition = function partition(number, parts) {
+    var ret = [];
+    var div = Math.floor(number/parts),
+      rem = number % parts;
+    for (var i = 0; i < parts; ++i) {
+      ret[i] = div + ((rem-- > 0) ? 1 : 0);
+    }
+    return ret;
+  };
+}
+
+if (!Number.prototype.partition) {
+  Number.prototype.partition = function partition(parts) {
+    return Number.partition(this, parts);
+  };
+}
+
 if (!String.prototype.truncate) {
   String.prototype.truncate = function truncate(l) {
     return this.slice(0, l);
+  };
+}
+
+if (!String.partition) {
+  String.partition = function partition(string, parts) {
+    var words = string.w();
+    var p = words.length.partition(parts),
+      l = p.length,
+      idx = 0;
+    for (var i = 0; i < l-1; ++i) {
+      idx += p[i];
+      words.splice(idx, 0, "\n");
+    }
+    return words.join(" ");
+  };
+}
+if (!String.prototype.partition) {
+  String.prototype.partition = function partition(parts) {
+    return String.partition(this, parts);
   };
 }

@@ -17,15 +17,15 @@ a:active {
 #application {
   position: absolute;
   width: 800px; left: 50%; margin-left: -400px;
-  height: 650px; top: 50%; margin-top: -325px;
+  height: 650px; top: 10px;
 }
 #canvas {
   background-color: #FFFFFF;
   cursor: crosshair;
   padding: 0px; margin: 0px;
   /*border: 2px solid black;*//*screws up mouse positioning by 2px*/
-  -webkit-box-shadow: 0 0 5px #000;
-  -moz-box-shadow: 0 0 5px #000;
+  -webkit-box-shadow: 0 0 25px #000;
+  -moz-box-shadow: 0 0 25px #000;
 }
 #app-toolbar {
   width: 790px;
