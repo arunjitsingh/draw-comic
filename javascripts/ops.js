@@ -73,11 +73,15 @@ var kContainerOffsetTop  = $(".canvas-container").first().offset().top;
 var kCanvasOffsetLeft = $("#canvas").offset().left;
 var kCanvasOffsetTop  = $("#canvas").offset().top;
 
-function addObject() {
+function addText() {
   var text = prompt("New dialog");
   if (typeof(text)==='undefined' || text == '') {
     return;
   }
+  renderText(text);
+}
+
+function renderText(text) {
   text = (text.toString()).truncate(150); //truncate to 150 chars
   var txtlen = text.toString().length;
   var w = kObjectWidth, 
@@ -109,7 +113,7 @@ function addObject() {
   $(".canvas-container").first().append(newCanvas);
 }
 
-function flattenCanvas() {
+function flattenText() {
   var canvas = $("#canvas");
   var context = canvas[0].getContext('2d');
   

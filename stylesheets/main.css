@@ -2,6 +2,12 @@ html, body {
   margin:0; padding:0;
   width:100%;height:100%;
 }
+h1, h2, h3, h4, h5, h6 {
+  margin:0; padding:0;
+}
+body {
+  background-color: #CFCFEA;
+}
 a, a:hover, a:link, a:active, a:visited {
   text-decoration:none;
   color:inherit;
@@ -14,25 +20,35 @@ a:hover {
 a:active {
   color: #BD5463;
 }
+
+h1.dc-h {
+  position: fixed;
+  left: 5px; top: 5px;
+  text-transform: uppercase;
+  font: 35px "RedFive";
+}
+
 #application {
   position: absolute;
-  width: 800px; left: 50%; margin-left: -400px;
-  height: 650px; top: 10px;
+  width: 745px; left: 50%;
+  height: auto;
+  margin: 10px 0 10px -372.5px;
 }
 #canvas {
   background-color: #FFFFFF;
   cursor: crosshair;
   padding: 0px; margin: 0px;
-  /*border: 2px solid black;*//*screws up mouse positioning by 2px*/
   -webkit-box-shadow: 0 0 25px #000;
   -moz-box-shadow: 0 0 25px #000;
 }
 #app-toolbar {
-  width: 790px;
   height: 40px;
   margin: 0px; padding: 10px 10px 0px 0px;
   background-color: rgba(12, 12, 12, 0.6);
   border: 2px solid black;
+  position: fixed;
+  top: 0; left: 50%; margin-left:-180px;
+  width: 360px;
 }
 .clickable {
   cursor: pointer;

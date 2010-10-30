@@ -2,24 +2,14 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Tests</title>
+  <title>Draw&#x25CF;Comic</title>
   <link rel="stylesheet" href="stylesheets/main.css">
-  <style>
-body {
-  background-color: #CFCFEA;
-}
-#app-toolbar {
-  position: absolute;
-  top: 0; left: 0;
-  float:left;
-  width: 360px;
-}
-  </style>
 </head>
 <body>
+  <h1 class="dc-h">Draw&#x25CF;Comic</h1>
   <div id="application">
     <div class="canvas-container" width="745" height="1050">
-    <canvas id="canvas" width="745" height="1050">
+    <canvas id="canvas" class="canvas-page" width="745" height="1050">
       You need a modern web-browser to use this application.
       <ul>
         <li><a href="http://chrome.google.com">Chrome</a></li>
@@ -32,7 +22,7 @@ body {
     <div id="app-toolbar">
       <span id="status"></span>
       <div id="button-bar">
-        <span class="button clickable" onclick="exportPDF();">Export</span><span class="button clickable" onclick="saveLocally();">Save</span><span class="button clickable" onclick="loadLast();">Load Last</span><span class="button clickable" onclick="clearCanvas();">Clear</span><span class="button clickable" onclick="addObject();">Add Text</span><span class="button clickable" onclick="flattenCanvas();">Flatten Text</span>
+        <span class="button clickable" onclick="exportPDF();">Export</span><span class="button clickable" onclick="saveLocally();">Save</span><span class="button clickable" onclick="loadLast();">Load Last</span><span class="button clickable" onclick="clearCanvas();">Clear</span><span class="button clickable" onclick="addText();">Add Text</span><span class="button clickable" onclick="flattenText();">Flatten Text</span>
       </div>
     </div>
   </div>

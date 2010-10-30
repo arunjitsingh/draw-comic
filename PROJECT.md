@@ -31,23 +31,27 @@ NoSQL - NoSchema Object (JSON) store (Database: [CouchDB][couchone])
         "users":[/*list of user _ids*/],
         "_attachments":[/*uploaded images*/],
         "project":"Project Name",
-        "artboards":[
-                      {
-                        "bitmap":"{base64}",
-                        "objects":[
-                                    {
-                                      "x":123,
-                                      "y":123,
-                                      "width":123,
-                                      "height":123,
-                                      "text":"abc",
-                                      "direction":"(UP|RIGHT|DOWN|LEFT)"
-                                    },
-                                    ...
-                                  ]
-                      },
-                      ...
-                    ]
+        "pages":[
+                  "artboards":[
+                                {
+                                  "bitmap":"{base64}",
+                                  "objects":[
+                                              {
+                                                "x":123,
+                                                "y":123,
+                                                "width":123,
+                                                "height":123,
+                                                "text":"abc",
+                                                "direction":"(UP|RIGHT|DOWN|LEFT)"
+                                              },
+                                              ...
+                                            ]
+                                },
+                                ...
+                              ],
+                    ...
+                ],
+        
       },
       ...
     ]
