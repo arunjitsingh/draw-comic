@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'RedFive';
+  src: local('☺'), url('../resources/fonts/RedFive.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 html, body {
   margin:0; padding:0;
   width:100%;height:100%;
@@ -49,6 +56,7 @@ h1.dc-h {
   position: fixed;
   top: 0; left: 50%; margin-left:-180px;
   width: 360px;
+  cursor: move;
 }
 .clickable {
   cursor: pointer;
@@ -98,4 +106,9 @@ h1.dc-h {
 }
 #status {
   float: right;
+}
+
+/*  DYNAMIC ADDITIONS  */
+.c-object {
+  cursor:move;
 }
