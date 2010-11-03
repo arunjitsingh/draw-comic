@@ -1,7 +1,13 @@
-(function($){
-  /**
-  * Get the mouse position relative to the element
-  */
+/*
+  JQUERY PLUGINS
+  Copyright © 2010, Arunjit Singh (@arunjitsingh)
+*/
+
+//////////////////////////////////////////////////////////////////////////////
+/**
+* Get the mouse position relative to the element
+*/
+(function($) {
   if (typeof($.mouse) !== 'undefined') {$._oldMouse = $.mouse;}
   if (typeof($.fn.mouse) !== 'undefined') {$.fn._oldMouse = $.fn.mouse;}
   $.mouse = function(evt, elt) {
@@ -9,7 +15,7 @@
     var x,              // x-coord
       y,                // y-coord
       doc = document;   // local copy of window.document
-    elt = elt || evt.target;
+    elt = $(elt)[0] || evt.target;
     if (typeof(evt.offsetX)!=='undefined' && typeof(evt.offsetY)!=='undefined') {
       x = evt.offsetX;
       y = evt.offsetY;
@@ -29,7 +35,62 @@
     }
     return {'x':x, 'y':y};
   };
+  
   $.fn.mouse = function(evt) {
     return $.mouse(evt, this);
   };
+})(jQuery);
+
+
+//////////////////////////////////////////////////////////////////////////////
+/**
+ * editable: For DIV elements in browsers supporting contenteditable
+ */
+(function($) {
+  if (typeof($.editable) !== 'undefined') {$._oldEditable = $.editable;}
+  if (typeof($.fn.editable) !== 'undefined') {$.fn._oldEditable = $.fn.editable;}
+  
+  $.editable = {};
+  $.editable.defaults = {
+    finishedEditing: function() {},
+    autoStart: false,
+    toolTip: "Double Click to Edit"
+  };
+  
+  $.fn.editable = function(options) {
+    var opts = $.extend({}, $.editable.defaults, options);
+    function editable() {
+      var elt = $(this);
+
+      elt.dblclick(startEditing);
+      elt.blur(stopEditing);
+      elt.addClass("editable");
+      elt.attr("title", opts.toolTip);
+
+      function startEditing() {
+        elt.attr("contenteditable", "true");
+        elt.addClass("editing");
+        elt.focus();
+        return false;
+      }
+
+      function stopEditing() {
+        elt.attr("contenteditable", "false");
+        elt.removeClass("editing");
+        if ($.isFunction(opts.finishedEditing)) {
+          opts.finishedEditing();
+        }
+        return false;
+      }
+
+      if (opts.autoStart) {
+        startEditing();
+      }
+    }
+    
+    this.each(editable);
+    
+    return this;
+  };
+  
 })(jQuery);
