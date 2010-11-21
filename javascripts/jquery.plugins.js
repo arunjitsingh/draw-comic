@@ -3,6 +3,16 @@
   Copyright © 2010, Arunjit Singh (@arunjitsingh)
 */
 
+
+(function($) {
+  $.fn.centerBox = function() {
+    return this.each(function() {
+      var s = this.style;
+      s.left = (($(window).width() - $(this).width()) / 2) + "px";
+      s.top = (($(window).height() - $(this).height()) / 2) + "px";
+    });
+  }
+})(jQuery);
 //////////////////////////////////////////////////////////////////////////////
 /**
 * Get the mouse position relative to the element
@@ -88,9 +98,7 @@
       }
     }
     
-    this.each(editable);
-    
-    return this;
+    return this.each(editable);
   };
   
 })(jQuery);

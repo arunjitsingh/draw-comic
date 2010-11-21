@@ -28,6 +28,16 @@ a:active {
   color: #BD5463;
 }
 
+.clickable {
+  cursor: pointer;
+}
+.draggable, .ui-draggable {
+  cursor: move;
+}
+.editable:focus {
+  outline:none;
+}
+
 h1.dc-h {
   position: fixed;
   left: 5px; top: 5px;
@@ -56,10 +66,7 @@ h1.dc-h {
   position: fixed;
   top: 0; left: 50%; margin-left:-180px;
   width: 360px;
-  cursor: move;
-}
-.clickable {
-  cursor: pointer;
+  z-index: 10000;
 }
 #button-bar {
   position: absolute;
@@ -108,7 +115,17 @@ h1.dc-h {
   float: right;
 }
 
-/*  DYNAMIC ADDITIONS  */
-.c-object {
-  cursor:move;
+.object.text {
+  display: block, table-cell;
+  vertical-align: middle;
+  position:absolute; left:0; top:0;
+  width:150px;
+  height:50px;
+  border-radius: 50px;
+  font:10pt "Comic Sans MS";
+  background: white;
+  text-transform:uppercase;
+  text-align: center;
+  -webkit-box-shadow: 0 0 5px #000;
+  padding: 20px;
 }

@@ -9,7 +9,7 @@ $(document).ready(function() {
 
   var mouseDown = function(evt) {
     evt.preventDefault();
-    isDrawing = true; 
+    isDrawing = true;
     context.beginPath();
     var p = $(canvas).mouse(evt),
       x = p.x,

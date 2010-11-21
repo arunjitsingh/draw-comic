@@ -74,53 +74,67 @@ var kCanvasOffsetLeft = $("#canvas").offset().left;
 var kCanvasOffsetTop  = $("#canvas").offset().top;
 
 function addText() {
-  var text = prompt("New dialog");
-  if (typeof(text)==='undefined' || text == '') {
-    return;
-  }
-  renderText(text);
+  $("<div class='text object'></div>")
+    .editable()
+    .draggable()
+    .appendTo("body");
 }
 
-function renderText(text) {
-  text = (text.toString()).truncate(150); //truncate to 150 chars
-  var txtlen = text.toString().length;
-  var w = kObjectWidth, 
-    h = (txtlen / kObjectMaxCharsPerLine + 1) * kObjectLineHeight;
-  var newCanvas = $(kNewCanvasString.fmt(w,h));
-  var context = newCanvas[0].getContext('2d');
-  
-  context.strokeStyle = "#000000";
-  context.lineWidth = 2.0;
-  context.fillStyle = "#FFFFFF";
-  context.beginPath();
-  context.moveTo(0,0);
-  context.lineTo(w,0);
-  context.lineTo(w,h);
-  context.lineTo(0,h);
-  context.stroke();
-  context.fill();
-  context.closePath();
-  
-  context.textAlign = "center";
-  context.font = kContextFont;
-  context.lineWidth = 1.0;
-  context.fillStyle = "#000000";
-  context.fillText(text, 25, 25);
-  
-  newCanvas.css({position:'absolute',top:0, left:0});
-  newCanvas.draggable();
-  
-  $(".canvas-container").first().append(newCanvas);
-}
+// function renderText(text) {
+//   text = (text.toString()).truncate(150); //truncate to 150 chars
+//   var txtlen = text.toString().length;
+//   var w = kObjectWidth, 
+//     h = (txtlen / kObjectMaxCharsPerLine + 1) * kObjectLineHeight;
+//   var newCanvas = $(kNewCanvasString.fmt(w,h));
+//   var context = newCanvas[0].getContext('2d');
+//   
+//   context.strokeStyle = "#000000";
+//   context.lineWidth = 2.0;
+//   context.fillStyle = "#FFFFFF";
+//   context.beginPath();
+//   context.moveTo(0,0);
+//   context.lineTo(w,0);
+//   context.lineTo(w,h);
+//   context.lineTo(0,h);
+//   context.stroke();
+//   context.fill();
+//   context.closePath();
+//   
+//   context.textAlign = "center";
+//   context.font = kContextFont;
+//   context.lineWidth = 1.0;
+//   context.fillStyle = "#000000";
+//   context.fillText(text, 25, 25);
+//   
+//   newCanvas.css({position:'absolute',top:0, left:0});
+//   newCanvas.draggable();
+//   
+//   $(".canvas-container").first().append(newCanvas);
+// }
+
+// function flattenText() {
+//   var canvas = $("#canvas");
+//   var context = canvas[0].getContext('2d');
+//   
+//   $(".c-object").each(function() {
+//     var obj = $(this);
+//     // console.log(obj[0], obj.position().left, obj.position().top);
+//     // console.log(obj[0], obj.offset().left, obj.offset().top);
+//     context.drawImage(obj[0],
+//       obj.position().left,
+//       obj.position().top
+//     );
+//     obj.remove();
+//     obj = null;
+//   });
+// }
 
 function flattenText() {
   var canvas = $("#canvas");
   var context = canvas[0].getContext('2d');
   
-  $(".c-object").each(function() {
+  $('.object.text').each(function() {
     var obj = $(this);
-    // console.log(obj[0], obj.position().left, obj.position().top);
-    // console.log(obj[0], obj.offset().left, obj.offset().top);
     context.drawImage(obj[0],
       obj.position().left,
       obj.position().top

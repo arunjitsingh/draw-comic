@@ -7,7 +7,7 @@ DRAW•COMIC
 * RAPID PROTOTYPING
 
 ##Requirements
-1. Draw bitmaps (+colors, +eraser, +undo)
+1. Draw bitmaps (+colours, +eraser, +undo)
 2. Import images (`/(jpe?g|png|gif|bmp)/ig`)
 3. Add objects like text (+fonts, +bubbles)
 4. Save on server
@@ -28,27 +28,31 @@ NoSQL - NoSchema Object (JSON) store (Database: [CouchDB][couchone])
 
     [
       { "_id":"ABC123",
-        "users":[/*list of user _ids*/],
+        "users":[/*list of user _ids who can access this project (optional)*/],
         "_attachments":[/*uploaded images*/],
         "project":"Project Name",
         "pages":[
-                  "artboards":[
-                                {
-                                  "bitmap":"{base64}",
-                                  "objects":[
-                                              {
-                                                "x":123,
-                                                "y":123,
-                                                "width":123,
-                                                "height":123,
-                                                "text":"abc",
-                                                "direction":"(UP|RIGHT|DOWN|LEFT)"
-                                              },
-                                              ...
-                                            ]
-                                },
-                                ...
-                              ],
+                  "objects":[
+                              {
+                                "x":123,
+                                "y":123,
+                                "width":123,
+                                "height":123,
+                                "text":"abc",
+                                "direction":"(UP|RIGHT|DOWN|LEFT)" // optional
+                              },
+                              ...
+                            ],
+                  "layers":[
+                            {
+                              "bitmap":"{base64}", // images, flattened artwork
+                              "x":123,
+                              "y":123,
+                              "width":123,
+                              "height":123
+                            },
+                            ...
+                          ],
                     ...
                 ],
         
