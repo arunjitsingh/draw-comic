@@ -1,4 +1,5 @@
-var Page = function() {
+var DC = DC || {};
+DC.Page = function() {
   var self = this;
   
   /* private functions like `function fn(...) {...}` */
@@ -18,7 +19,7 @@ var Page = function() {
   };
   
   self.addLayer = function() {
-    var layer = new Layer(self);
+    var layer = new DC.Layer(self);
     self.layers.push(layer);
   };
   
@@ -31,7 +32,7 @@ var Page = function() {
   };
   
   self.addObject = function() {
-    var object = new Object(self);
+    var object = new DC.Object(self);
     self.objects.push(object);
   };
   

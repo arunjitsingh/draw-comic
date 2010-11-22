@@ -1,4 +1,5 @@
-var Model = function() {
+var DC = DC || {};
+DC.Model = function() {
   var self = this;
   
   /* private functions like `function fn(...) {...}` */
