@@ -13,6 +13,38 @@
     });
   }
 })(jQuery);
+
+
+//////////////////////////////////////////////////////////////////////////////
+/**
+* Get the mouse position relative to the element
+*/
+(function($) {
+
+  $.GET = $.getJSON;
+
+  $.POST = function(uri, data, callback) {
+    return $.post(uri, data, callback, 'json');
+  };
+
+  $.PUT = function(uri, data, callback) {
+    if ($.isFunction(data)) {
+      callback = data;
+      data = {};
+    }
+    return $.post(uri, $.extend(data, { _method: 'put' }), callback, 'json');
+  };
+  
+  $.DEL = function(uri, data, callback) {
+    if ($.isFunction(data)) {
+      callback = data;
+      data = {};
+    }
+    return $.post(uri, $.extend(data, { _method: 'delete' }), callback, 'json');
+  };
+})(jQuery);
+
+
 //////////////////////////////////////////////////////////////////////////////
 /**
 * Get the mouse position relative to the element
@@ -88,7 +120,7 @@
         elt.attr("contenteditable", "false");
         elt.removeClass("editing");
         if ($.isFunction(opts.finishedEditing)) {
-          opts.finishedEditing();
+          opts.finishedEditing.call(this);
         }
         return false;
       }

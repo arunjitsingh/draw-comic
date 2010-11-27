@@ -1,5 +1,8 @@
 var DC = DC || {};
-DC.Page = function() {
+DC.PageView = function(page) {
+  if (!page) {
+    throw new Error("Model for PageView missing!");
+  }
   var self = this;
   
   /* private functions like `function fn(...) {...}` */
@@ -21,6 +24,7 @@ DC.Page = function() {
   self.addLayer = function() {
     var layer = new DC.Layer(self);
     self.layers.push(layer);
+    return layer;
   };
   
   self.removeLayer = function(layer) {
@@ -34,6 +38,7 @@ DC.Page = function() {
   self.addObject = function() {
     var object = new DC.Object(self);
     self.objects.push(object);
+    return object;
   };
   
   self.removeObject = function(object) {
@@ -42,5 +47,15 @@ DC.Page = function() {
       self.objects.slice(pos, 1);
       object.view().remove();
     }
+  };
+
+  self.populate = function(data) {
+    _.extend(self, data);
+    _.each(self.layers, function(layer) {
+      
+    });
+    _.each(self.objects, function(object) {
+      
+    });
   };
 };

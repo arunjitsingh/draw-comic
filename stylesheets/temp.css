@@ -4,45 +4,60 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'Komika Hand';
+  src: local('☺'), url('../resources/fonts/Komika_Hand_Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
 
-html, body {
+html, body, {
   margin:0; padding:0;
   width:100%;height:100%;
 }
 
+h1, h4 {
+  margin:0; padding: 0;
+  width: 100%;
+}
+
 body {
-  background-color: #C0C0CA;
+  background-color: #777;
+  background-image: url(../resources/images/bg.png);
 }
 
-h1.dc-h {
-  position: fixed;
-  width: 400px; left: 50%; margin-left: -200px;
-  top: 5px;
-  text-transform: uppercase;
-  text-align: center;
-  font: 35px "RedFive";
-  color: #E00;
-  text-shadow: 0 -2px 2px #fff, 0 2px 2px #000;
-}
-
-div#temp {
+#temp {
   position: absolute;
   width: 700px; left:50%; margin-left: -370px;
   height: 200px; top:150px;
-  padding: 125px 20px 0 20px;
-  text-align: center;
+  padding: 70px 20px 0px 20px;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   box-shadow: 0 0 10px #000;
   -webkit-box-shadow: 0 0 10px #000;
   -moz-box-shadow: 0 0 10px #000;
-  background-color: #334;
-  background: -webkit-gradient(linear, left top, left bottom,
-                               from(#334),
-                               to(#000));
+  background-color: rgba(255, 255, 255, 0.75);
+  background-image: -webkit-gradient(linear, left top, left bottom,
+                               from(rgba(51,51,68,0.9)),
+                               to(rgba(0,0,0,0.9)));
   background: -moz-linear-gradient(-90deg, #334, #000);
-  text-shadow: 0 -2px 0 #000;
-  font: 50px 'Lucida Sans';
-  color: #FFF;
+}
+#temp h1 {
+  width: 100%;
+  top: 5px;
+  text-transform: uppercase;
+  text-align: center;
+  font: 65px "RedFive";
+  color: #CA0;
+  text-shadow: 0 -2px 2px #fff, 0 2px 2px #000;
+  letter-spacing: 3px;
+}
+#temp h4 {
+  text-shadow: 0 -1px 1px #fff, 0 1px 1px #000;
+  font: 25px 'Komika Hand' bold;
+  color: #777;
+  text-align: center;
+  width: 100%;
+  letter-spacing: 5px;
 }

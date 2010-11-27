@@ -14,7 +14,7 @@ DC.Object = function(page) {
               })
               .editable({
                 finishedEditing: function() {
-                  self.text = $(this).val();
+                  self.text = $(this).html();
                 }
               })
               .css({position: 'absolute', top: 0, left: 0});
@@ -30,5 +30,9 @@ DC.Object = function(page) {
   
   self.page = function() {
     return page;
+  };
+  
+  self.populate = function(data) {
+    _.extend(self, data);
   };
 };

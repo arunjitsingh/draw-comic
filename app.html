@@ -2,19 +2,64 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Draw&#x25CF;Comic</title>
+  <title>DRAW&#x25CF;COMIC</title>
   <link rel="stylesheet" href="stylesheets/app.css">
 </head>
 <body>
-  <h1 class="dc-h">Draw&#x25CF;Comic</h1>
+  <h1 class="dc-h">D&#x25CF;C</h1>
   
-  <div id="app-toolbar">
-    <span id="status"></span>
-    <div id="button-bar">
-      <span class="button clickable" onclick="exportPDF();">Export</span><span class="button clickable" onclick="saveLocally();">Save</span><span class="button clickable" onclick="loadLast();">Load Last</span><span class="button clickable" onclick="clearCanvas();">Clear</span><span class="button clickable" onclick="addText();">Add Text</span><span class="button clickable" onclick="flattenText();">Flatten Text</span>
+  <div id="project-toolbar" class="toolbar-container">
+    <div class="toggle clickable"><img src="resources/images/FN.png" title="Show/Hide Project controls"></div>
+    <div class="toolbar vertical hidden">
+      <span id="new-project" class="button clickable"><img src="resources/images/NEW.png" title="New/Load Project"></span>
+      <span id="save-project" class="button clickable"><img src="resources/images/SAVE.png" title="Save"></span>
     </div>
   </div>
-  <div id="load-box" style="display:none"></div>
+  <div id="page-toolbar" class="toolbar-container">
+    <span class="toggle clickable"><img src="resources/images/PG.png" title="Show/Hide page controls"></span>
+    <div class="toolbar vertical hidden">
+      <span id="new-page" class="button clickable"><img src="resources/images/NEW.png" title="New Page"></span>
+      <hr>
+      <span id="add-layer" class="button clickable"><img src="resources/images/ADD.png" title="Add drawing"></span>
+    </div>
+  </div>
+  <div id="layer-toolbar" class="toolbar-container">
+    <span class="toggle clickable"><img src="resources/images/LY.png" title="Show/Hide layer controls"></span>
+    <div class="toolbar vertical hidden">
+      <span id="ch-color" class="button clickable"><img src="resources/images/COLOR.png" title="Line Color"></span>
+      <span id="ch-linewidth" class="button clickable"><img src="resources/images/LWID.png" title="Line Width"></span>
+      <hr>
+      <span id="clear-layer" class="square button clickable"><img src="resources/images/CLS.png" title="Clear Layer"></span>
+      <span id="delete-layer" class="button clickable"><img src="resources/images/DEL.png" title="Delete Layer"></span>
+    </div>
+  </div>
+  <div id="upload-toolbar" class="toolbar-container">
+    <div class="toggle clickable"><img src="resources/images/UP.png" title="Upload image"></div>
+    <div class="toolbar horizontal hidden">
+      <form action="" method="post" id="upload-form">
+        <table>
+          <tr>
+            <td>Image:</td>
+            <td><input type="file" name="_attachment"></td>
+            <td><button type="submit">Upload</button></td>
+            <td><button type="button" class="cancel">Cancel</button></td>
+          </tr>
+        </table>
+        <input type="hidden" name="_rev" value="0">
+      </form>
+    </div>
+  </div>
+  
+  
+  <div id="load-box" style="display:none">
+    <div class="page-container">
+      <canvas class="page"></canvas>
+    </div>
+    <canvas class="layer"></canvas>
+    <div class="input-popup">
+      <input type="text">
+    </div>
+  </div>
 </body>
   <script src="javascripts/utilities.js"></script>
   <script src="javascripts/vendor/jquery/all.js"></script>
@@ -23,10 +68,9 @@
   <script type="text/javascript">
 Sexy
   .js('javascripts/jquery.plugins.js')
-  .js('javascripts/ops.js')
-  .js('javascripts/models/Page.js')
-  .js('javascripts/models/Layer.js')
-  .js('javascripts/models/Object.js');
+  .js('javascripts/DCAppLoad.js')
+  .js('javascripts/DC/DC.js')
+  .js('javascripts/DC/models/Project.js');
 $("#app-toolbar").draggable();
   </script>
 </html>
