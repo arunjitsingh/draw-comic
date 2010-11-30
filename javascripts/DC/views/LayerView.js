@@ -11,7 +11,9 @@
     lineWidth: 1.0
   };
   DC.LayerView = function(attr) {
-    if (!attr.layer)
+    if (!attr.layer) {
+      //
+    }
     if (!_.isEmpty(attr.data)) {
       _.extend(self.data, kDefaults, attr.data);
     }

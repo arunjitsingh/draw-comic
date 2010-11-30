@@ -6,12 +6,33 @@
   <link rel="stylesheet" href="stylesheets/app.css">
 </head>
 <body>
-  <h1 class="dc-h">D&#x25CF;C</h1>
-  
+  <h1 id="dc-h" class="clickable">D&#x25CF;C</h1>
+  <div id="login-toolbar" class="toolbar-container">
+    <div class="toolbar horizontal">
+      <form action="" method="post" id="login-form">
+        <table>
+          <tr>
+            <td><input id="username" type="text" name="name" placeholder="Username"></td>
+            <td><input id="password" type="password" name="password" placeholder="Password"></td>
+            <td><button type="submit" id="login">Login</button></td>
+          </tr>
+        </table>
+      </form>
+      <form action="" method="post" id="logout-form" style="display:none">
+        <table>
+          <tr>
+            <td><span id="user"></span></td>
+            <td><button type="submit" id="logout">Logout</button></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
   <div id="project-toolbar" class="toolbar-container">
     <div class="toggle clickable"><img src="resources/images/FN.png" title="Show/Hide Project controls"></div>
     <div class="toolbar vertical hidden">
-      <span id="new-project" class="button clickable"><img src="resources/images/NEW.png" title="New/Load Project"></span>
+      <span id="new-project" class="button clickable"><img src="resources/images/NEW.png" title="New Project"></span>
+      <span id="load-project" class="button clickable"><img src="resources/images/LOAD.png" title="Load Project"></span>
       <span id="save-project" class="button clickable"><img src="resources/images/SAVE.png" title="Save"></span>
     </div>
   </div>
@@ -40,9 +61,9 @@
         <table>
           <tr>
             <td>Image:</td>
-            <td><input type="file" name="_attachment"></td>
+            <td><input type="file" name="_attachments"
+                  accept="image/png, image/jpg, image/jpeg, image/bmp"></td>
             <td><button type="submit">Upload</button></td>
-            <td><button type="button" class="cancel">Cancel</button></td>
           </tr>
         </table>
         <input type="hidden" name="_rev" value="0">
@@ -62,14 +83,15 @@
   </div>
 </body>
   <script src="javascripts/utilities.js"></script>
-  <script src="javascripts/vendor/jquery/all.js"></script>
+  <script src="javascripts/vendor/jquery/base.js"></script>
+  <script src="javascripts/vendor/jquery/ui.js"></script>
+  <script src="javascripts/vendor/jquery/db.js"></script>
   <script src="javascripts/vendor/underscore.js"></script>
   <script src="javascripts/_.mixins.js"></script>
   <script type="text/javascript">
 Sexy
   .js('javascripts/jquery.plugins.js')
   .js('javascripts/DCAppLoad.js')
-  .js('javascripts/DC/DC.js')
   .js('javascripts/DC/models/Project.js');
 $("#app-toolbar").draggable();
   </script>

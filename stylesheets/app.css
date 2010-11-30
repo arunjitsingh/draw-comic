@@ -4,6 +4,12 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'Komika Hand';
+  src: local('☺'), url('../resources/fonts/Komika_Hand_Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
 
 html, body {
   margin:0; padding:0;
@@ -19,6 +25,7 @@ body {
   background-color: #777;
   background-image: url(../resources/images/bg.png);
   overflow-y: hidden;
+  -webkit-transform: translateZ(0);
 }
 a, a:hover, a:link, a:active, a:visited {
   text-decoration:none;
@@ -43,7 +50,7 @@ a:active {
   outline:none;
 }
 
-h1.dc-h {
+h1#dc-h {
   position: fixed;
   left: 40px; top: 0px;
   padding: 0 10px;
@@ -53,6 +60,8 @@ h1.dc-h {
   text-shadow: 0 -2px 2px #fff, 0 2px 2px #000;
   height: 40px;
   background-color: rgba(0, 0, 0, 0.8);
+  width: 85px;
+  z-index: 50;
 }
 
 
@@ -63,6 +72,9 @@ h1.dc-h {
 }
 
 .toolbar {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #cfcfcf;
+  font: 12px "Komika Hand" bold;
   -webkit-transition: all 250ms;
   z-index: 45;
 }
@@ -70,6 +82,73 @@ h1.dc-h {
 .toolbar, .toolbar-container .toggle {
   background-color: rgba(0, 0, 0, 0.8);
 }
+
+.toolbar button, .toolbar input {
+  cursor: pointer;
+  background-color: rgba(44, 44, 44, 0.8);
+  color: #cfcfcf;
+  border-radius: 1em;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  padding: 0.4em 1.3em;
+  border: 1px solid #CCC;
+  font: 12px "Komika Hand" bold;
+}
+.toolbar button:hover, .toolbar input:hover {
+  background-color: rgba(99, 99, 99, 0.8);
+}
+.toolbar button:active, .toolbar input:active {
+  background-color: rgba(22, 22, 22, 0.8);
+}
+.toolbar input:focus {
+  outline: none;
+  box-shadow: 0 0 16px #4FF;
+  -webkit-box-shadow: 0 0 16px #4FF;
+  -moz-box-shadow: 0 0 16px #4FF;
+}
+
+.toolbar button {
+  background: -webkit-gradient(linear, left top, left bottom,
+                              from(rgba(44, 44, 44, 0.8)),
+                              to(rgba(22, 22, 22, 0.8)));
+  background: -moz-linear-gradient(-90deg,
+                                    rgba(44, 44, 44, 0.8),
+                                    rgba(22, 22, 22, 0.8));
+}
+.toolbar button:hover {
+  background: -webkit-gradient(linear, left top, left bottom,
+                              from(rgba(77, 77, 77, 0.8)),
+                              to(rgba(44, 44, 44, 0.8)));
+  background: -moz-linear-gradient(-90deg,
+                                    rgba(77, 77, 77, 0.8),
+                                    rgba(44, 44, 44, 0.8));
+}
+.toolbar button:active {
+  background: -webkit-gradient(linear, left top, left bottom,
+                              from(rgba(44, 44, 44, 0.8)),
+                              to(rgba(77, 77, 77, 0.8)));
+  background: -moz-linear-gradient(-90deg,
+                                    rgba(44, 44, 44, 0.8),
+                                    rgba(77, 77, 77, 0.8));
+}
+
+#login-toolbar {
+  position: fixed; top: 0; left: 145px;
+}
+
+#login-toolbar .toolbar.horizontal {
+  position: absolute; left: 0; top: 0;
+  width: 450px; height: 40px; 
+  padding: 0 20px;
+}
+#login-toolbar .toolbar.horizontal.hidden {
+  left: -700px;
+}
+
+#login-toolbar .toolbar.loggedin {
+  width: 200px;
+}
+
 
 #project-toolbar {
   position: fixed; top: 0; left: 0;
@@ -128,8 +207,9 @@ h1.dc-h {
 #upload-toolbar {
   position: fixed; bottom: 0; left: 0px;
   color: #fff;
-  min-height: 40px; width: 500px;
+  min-height: 40px; width: 550px;
   background-color: none;
+  font: 16px "Komika Hand" bold;
 }
 #upload-toolbar .toggle {
   position: absolute; bottom: 0; left: 0;
@@ -146,7 +226,7 @@ h1.dc-h {
 #upload-toolbar #upload-form {
   display: block;
   margin-left: 40px;
-  height: 40px; width: 500px;
+  height: 40px; width: 550px;
   background-color: rgba(0, 0, 0, 0.8);
 }
 #upload-form td {
@@ -155,7 +235,9 @@ h1.dc-h {
 }
 #upload-form input[type=file] {
   color: #ccc; text-transform: uppercase;
+  font: 12px "Komika Hand" bold;
 }
+
 
 canvas.layer {
   position: absolute;
