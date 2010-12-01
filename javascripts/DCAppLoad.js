@@ -1,140 +1,72 @@
-(function(/*jQuery*/$, /*underscore*/_){
-  
-  var json = JSON.stringify;
-  
-  /*Namespace object DC*/
-  window.DC = {};
-  
-  DC.$ = $({});  // uh-oh! need to use jQ's eventing system
-  
-  DC.userCtx = {};
-  
-  DC.db = $.couch.db('draw-comic');
-  DC.offlineStore = {
-    name: "draw-comic",
-    used: false,
-    saveDoc: function(doc) {
-      if ('localStorage' in window) {
-        window.localStorage.setItem(DC.offlineStore.name, json(doc));
-        DC.offlineStore.used = true;
-        return true;
-      }
-    },
-    openDoc: function(doc) {
-      if ('localStorage' in window) {
-        return window.localStorage.getItem(this.name);
-      }
-      return null;
-    }
-  };
-  
-  DC.AppController = {}; //Application Controller
-  DC.APP = DC.AppController; //shortcut for DC.AppController
-
-
-  //load project
-  //create new project
-  
-  DC.currentProject = {};
-  
-  DC.loadProject = function(id) {
-    id = id.toString();
-    if (!_.isEmpty(id)) {
-      //check if project exists.
-      DC.db.openDoc(id, {}, {
-        success: function(data) {
-          if (data._id === id) {
-            //valid project
-            DC.currentProject = new DC.Project(data);
-            DC.$.trigger("new-project");
-          } else {
-            DC.$.trigger("error", 
-                      ["Couldn't load the project", "Project doesn't exist", []]);
-          }
-        },
-        error: function(status, error, reason) {
-          DC.$.trigger("error", 
-                    ["Couldn't load the project", reason, [status, error]]);
-        }
-      });
-    }
-  };
-  
-  DC.createNewProject = function() {
-    DC.currentProject = new DC.Project();
-    DC.$.trigger("new-project");
-  };
-  
-  DC.saveCurrentProject = function() {
-    if (navigator.onLine) {
-      DC.db.saveDoc(DC.currentProject, {
-        success: function(data) {
-          console.log(data);
-          if (data.ok) {
-            DC.currentProject._id = data.id;
-            DC.currentProject._rev = data.rev;
-
-          }
-        },
-        error: function(status, error, reason) {
-          DC.$.trigger("error", 
-                    ["Couldn't save the project", reason, [status, error]]);
-        }
-      });
-    } else {
-      DC.offlineStore.saveDoc(DC.currentProject);
-    }
-    
-    
-  };
-  
-  
-  DC.$.newLayerNode = function() {
-    return $('#load-box .layer').first().clone();
-  };
-  
-})(window.jQuery, window._);
-
-/*
- * Application load.. attach event handlers
- *
- */
-
 $(document).ready(function() {
+  
   $(".toolbar-container .toggle").click(function() {
     $(this).siblings(".toolbar").toggleClass("hidden");
   });
   
   $("#new-project").click(function() {
-    DC.createNewProject();
+    var pname = prompt("Name your project:");
+    var pid = prompt("A unique project ID:");
+    DC.APP.trigger("new", [pname, pid]);
     // add a new page automatically
   });
   
-  $("#load-project").click(function() {
+  $("#open-project").click(function() {
     var pid = prompt("Project ID:"); //ch. prompt to non-blocking dialog
     if(pid && _.isString(pid)) {
-      DC.loadProject(pid);
+      DC.APP.trigger("open", [pid]);
     }
   });
   
   $("#save-project").click(function() {
-    DC.saveCurrentProject();
+    DC.APP.trigger("save");
   });
   
+  
+  $("#new-page").click(function() {
+    DC.APP.trigger("addPage");
+  });
+  $("#add-layer").click(function() {
+    DC.APP.trigger("addLayer");
+  });
+  $("#edit-layer").click(function() {
+    if (DC.APP.selectedLayer) {
+      DC.APP.selectedLayer.drawable({enable:true});
+      //$('.button'). //DISABLE ALL OTHER BUTTONS
+      $("#done-edit-layer").show();
+      $("#edit-layer").hide();
+    }
+    //DC.APP.selectedLayer.trigger("edit");
+  });
+  $("#done-edit-layer").click(function() {
+    if (DC.APP.selectedLayer) {
+      DC.APP.selectedLayer.drawable({disable:true});
+      DC.$.trigger("layer-changed");
+    }
+  });
+  $("#delete-layer").click(function() {
+    if (DC.APP.selectedLayer) {
+      DC.APP.selectedLayer.remove();
+    }
+    //DC.APP.selectedLayer.trigger("delete");
+  });
+  $("#add-text").click(function() {
+    DC.APP.trigger("addText");
+  });
   
   
   var form = $("#upload-form");
   form.submit(function(evt) {
     evt.preventDefault();
-    var id = DC.currentProject._id,
-      rev = DC.currentProject._rev;
+    var id = DC.APP.project._id,
+      rev = DC.APP.project._rev;
     if (!id || !rev) {
       alert("Save the project before uploading images");
       return false;
     }
     form.find("input[name=_rev]").val(rev);
     var fileName = form.find("input[name=_attachments]").val();
-    if (!fileName || (/no file selected/i).test(fileName)) {
+    if (_.isEmpty(fileName) || (/no file selected/i).test(fileName)) {
       alert("Please select a file");
       return false;
     }
@@ -150,9 +82,14 @@ $(document).ready(function() {
         //response from couchdb is a <pre> block
         response = JSON.parse($(response).text());
         if (response.ok) {
-          alert(fileName + " saved!");
+          //alert(fileName + " saved!");
           // load image into page
-          // DC.loadImage(fileName)
+          if (response.rev) {
+            DC.APP.project._rev = response.rev;
+            DC.APP.reviseProject();
+          }
+          form.find("input[name=_attachments]").val("");
+          DC.APP.trigger("addImage", [fileName]);
         }
       },
       clearForm: true
@@ -206,9 +143,9 @@ $(document).ready(function() {
   DC.$.bind({
     "new-project": function(evt) {
       $("#page-toolbar .toolbar").removeClass("hidden");
+      $("#layer-toolbar .toolbar").removeClass("hidden");
       $("#project-toolbar .toolbar").addClass("hidden");
       DC.$.trigger("update-userCtx");
-      //add/trigger new-page
     },
     "new-page": function(evt) {
       //do something
@@ -227,22 +164,34 @@ $(document).ready(function() {
       $("#logout-form").hide().find("#user").text("");
       $("#login-toolbar .toolbar").removeClass("loggedin");
       $("#login-form").show();
+      $(".toolbar-container .toolbar").addClass("hidden");
+      $("#login-toolbar .toolbar").removeClass("hidden");
       DC.$.trigger("update-userCtx");
     },
     
+    "layer-changed": function(evt) {
+      $("#edit-layer").show();
+      $("#done-edit-layer").hide();
+    },
+    
+    
+    "change-pid-hash": function(evt) {
+      var id = DC.APP.project._id;
+      window.location.hash = id;
+    },
     
     "update-userCtx": function() {
       $.couch.session({
         success: function(response) {
           if (response.userCtx) {
-            DC.userCtx = response.userCtx;
-            if (!_.isEmpty(DC.currentProject)) {
-              DC.currentProject.updateAuthor(DC.userCtx);
+            DC.USER = response.userCtx;
+            if (!_.isEmpty(DC.APP.project)) {
+              DC.APP.project.author = DC.USER.name;
             }
           }
         },
         error: function(status, error, reason) {
-          DC.userCtx = {};
+          DC.USER = {};
         }
       });
     },
@@ -258,6 +207,12 @@ $(document).ready(function() {
   });
   
   
+  
+  if (window.location.hash) {
+    var pid = window.location.hash;
+    pid = pid.substring(1);
+    DC.APP.trigger("open", [pid]);
+  }
   
   // TEST TO CHECK IF localStorage NEEDS TO BE USED
   

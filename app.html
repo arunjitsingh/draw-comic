@@ -32,7 +32,7 @@
     <div class="toggle clickable"><img src="resources/images/FN.png" title="Show/Hide Project controls"></div>
     <div class="toolbar vertical hidden">
       <span id="new-project" class="button clickable"><img src="resources/images/NEW.png" title="New Project"></span>
-      <span id="load-project" class="button clickable"><img src="resources/images/LOAD.png" title="Load Project"></span>
+      <span id="open-project" class="button clickable"><img src="resources/images/LOAD.png" title="Load Project"></span>
       <span id="save-project" class="button clickable"><img src="resources/images/SAVE.png" title="Save"></span>
     </div>
   </div>
@@ -41,16 +41,19 @@
     <div class="toolbar vertical hidden">
       <span id="new-page" class="button clickable"><img src="resources/images/NEW.png" title="New Page"></span>
       <hr>
-      <span id="add-layer" class="button clickable"><img src="resources/images/ADD.png" title="Add drawing"></span>
+      <span id="add-layer" class="button clickable"><img src="resources/images/LAYER.png" title="Add layer"></span>
+      <span id="add-text" class="button clickable" style="display:none"><img src="resources/images/TEXT.png" title="Add text"></span>
     </div>
   </div>
   <div id="layer-toolbar" class="toolbar-container">
     <span class="toggle clickable"><img src="resources/images/LY.png" title="Show/Hide layer controls"></span>
     <div class="toolbar vertical hidden">
-      <span id="ch-color" class="button clickable"><img src="resources/images/COLOR.png" title="Line Color"></span>
-      <span id="ch-linewidth" class="button clickable"><img src="resources/images/LWID.png" title="Line Width"></span>
+      <span id="edit-layer" class="button clickable"><img src="resources/images/EDIT.png" title="Edit layer"></span>
+      <span id="done-edit-layer" style="display:none" class="button clickable"><img src="resources/images/EDIT-DONE.png" title="Edit layer"></span>
+      <span id="ch-color" class="button clickable" style="display:none"><img src="resources/images/COLOR.png" title="Line Color"></span>
+      <span id="ch-linewidth" class="button clickable" style="display:none"><img src="resources/images/LWID.png" title="Line Width"></span>
       <hr>
-      <span id="clear-layer" class="square button clickable"><img src="resources/images/CLS.png" title="Clear Layer"></span>
+      <span id="clear-layer" class="square button clickable" style="display:none"><img src="resources/images/CLS.png" title="Clear Layer"></span>
       <span id="delete-layer" class="button clickable"><img src="resources/images/DEL.png" title="Delete Layer"></span>
     </div>
   </div>
@@ -71,15 +74,20 @@
     </div>
   </div>
   
+  <div id="app-container">
+    <div id="application"></div>
+  </div>
   
   <div id="load-box" style="display:none">
-    <div class="page-container">
-      <canvas class="page"></canvas>
+    <div class="page-container" width="745" height="1050">
+      <canvas class="page" width="745" height="1050"></canvas>
     </div>
     <canvas class="layer"></canvas>
     <div class="input-popup">
       <input type="text">
     </div>
+    <div class="text-box dc-text"></div>
+    <div class="text-line dc-text"></div>
   </div>
 </body>
   <script src="javascripts/utilities.js"></script>
@@ -89,10 +97,15 @@
   <script src="javascripts/vendor/underscore.js"></script>
   <script src="javascripts/_.mixins.js"></script>
   <script type="text/javascript">
-Sexy
-  .js('javascripts/jquery.plugins.js')
-  .js('javascripts/DCAppLoad.js')
-  .js('javascripts/DC/models/Project.js');
-$("#app-toolbar").draggable();
+  // Load some dependancies
+  Sexy
+    .js('javascripts/jquery.plugins.js')
+    .js('javascripts/DC/core.js') //DC model
+    .js('javascripts/DC/AppController.js') //DC controller
+    .js('javascripts/DC/mvc/Project.js')
+    .js('javascripts/DC/mvc/Page.js')
+    .js('javascripts/DC/mvc/Layer.js')
+    .js('javascripts/DC/mvc/Text.js')
+    .js('javascripts/DCAppLoad.js');
   </script>
 </html>

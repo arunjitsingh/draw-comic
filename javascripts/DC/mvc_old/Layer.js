@@ -45,4 +45,54 @@
       self.data.y = $(this).position().top;
     };
   };
+  
+  DC.LayerView = {};
+  DC.LayerView.create = function(attr) {
+    var controller = attr.controller;
+    var node = $("#load-box .layer").first().clone();
+    var canvas = node[0];
+    
+    
+    node.bind({
+      "update": function(evt) {
+        controller.trigger("update", node);
+      }
+    });
+    return node;
+  };
+  
+  
+  
+  DC.LayerController = {};
+  DC.LayerController.create = function() {
+    var layers = [];
+    var views = [];
+    var controller = $({});
+    
+    controller.pages = function() {
+      return pages;
+    };
+    
+    controller.addPage = function(data) {
+      pages.push(DC.Page.create(data));
+      views.push(DC.PageView.create({data:data, controller:controller}));
+    };
+    controller.removePage = function(page) {
+      
+    };
+    
+    controller.layerController = DC.LayerController.create();
+    controller.objectController = DC.ObjectController.create();
+    
+    controller.bind({
+      "update": function(evt, view) {
+        
+      },
+      "delete": function(evt, view) {
+        
+      }
+    });
+    
+    return controller;
+  };
 })(window.DC);

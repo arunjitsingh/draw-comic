@@ -1,4 +1,3 @@
-var DC = DC || {};
 DC.Object = function(page) {
   if (!page) {
     throw new Error("Object needs to know what page to attach to");

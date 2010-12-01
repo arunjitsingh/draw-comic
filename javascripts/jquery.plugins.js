@@ -11,7 +11,7 @@
       s.left = (($(window).width() - $(this).width()) / 2) + "px";
       s.top = (($(window).height() - $(this).height()) / 2) + "px";
     });
-  }
+  };
 })(jQuery);
 
 
@@ -104,7 +104,7 @@
     function editable() {
       var elt = $(this);
 
-      elt.dblclick(startEditing);
+      elt.bind('dblclick.edit', startEditing);
       elt.blur(stopEditing);
       elt.addClass("editable");
       elt.attr("title", opts.toolTip);
@@ -131,6 +131,92 @@
     }
     
     return this.each(editable);
+  };
+  
+})(jQuery);
+
+
+//////////////////////////////////////////////////////////////////////////////
+/**
+ * drawable: For CANVAS elements only
+ */
+(function($) {
+  if (typeof($.drawable) !== 'undefined') {$._oldDrawable = $.drawable;}
+  if (typeof($.fn.drawable) !== 'undefined') {$.fn._oldDrawable = $.fn.drawable;}
+  
+  $.drawable = {};
+  $.drawable.defaults = {};
+  $.fn.drawable = function(options) {
+    var drawable = function(options) {
+      var canvas = $(this);
+      if (canvas.is("canvas")) {
+        
+        canvas.isDrawable = false;
+        var context = canvas[0].getContext("2d");
+        var isDrawing = false;
+        context.strokeStyle = "#000000";
+        
+        var mouseDown = function(evt) {
+          evt.preventDefault();
+          isDrawing = true; 
+          context.beginPath();
+          var p = $(canvas).mouse(evt),
+            x = p.x,
+            y = p.y;
+          context.moveTo(x, y);
+          //console.log(evt, "Down:", p);
+        };
+
+        var mouseMove = function(evt) {
+          evt.preventDefault();
+          var p = $(canvas).mouse(evt),
+            x = p.x,
+            y = p.y;
+          if (isDrawing) {
+            context.lineTo(x, y);
+            context.stroke();
+          }
+          //console.log(evt, "Move:", p);
+        };
+
+        var mouseUp = function(evt) {
+          evt.preventDefault();
+          isDrawing = false;
+          //console.log(evt, "Up:", $(canvas).mouse(evt));
+        };
+        
+        if (options.enable || !options.disable) {
+          try {
+            canvas.draggable('disable');
+          } catch(e) {}
+          canvas.addClass("drawable");
+          canvas.bind({
+            'mousedown.draw': mouseDown,
+            'mouseup.draw': mouseUp,
+            'mousemove.draw': mouseMove
+          });
+        } else if (options.disable || !options.enable) {
+          canvas.removeClass("drawable");
+          canvas.unbind('mousedown.draw');
+          canvas.unbind('mouseup.draw');
+          canvas.unbind('mousemove.draw');
+          try {
+            canvas.draggable('enable');
+          } catch(e) {}
+          var data = canvas.data();
+          data.bitmap = canvas[0].toDataURL();
+          canvas.data(data);
+        }
+      } else {
+        throw new Error("Only <canvas> elements are drawable!");
+      }
+    };
+    
+    this.each(function() {
+      drawable.call(this, options);
+    });
+    
+    return this;
   };
   
 })(jQuery);

@@ -17,7 +17,7 @@ DRAW•COMIC
 ###`User` actions:
 1. Draw bitmaps
 2. Import images
-3. Add objects like text
+3. Add text
 4. Save on server
 5. Export PDF
 6. View imported files
@@ -32,14 +32,14 @@ NoSQL - NoSchema Object (JSON) store (Database: [CouchDB][couchone])
         "_attachments":[/*uploaded images*/],
         "project":"Project Name",
         "pages":[
-                  "objects":[
+                  "texts":[
                               {
                                 "x":123,
                                 "y":123,
+                                "z":123,
                                 "width":123,
                                 "height":123,
                                 "text":"abc",
-                                "direction":"(UP|RIGHT|DOWN|LEFT)" // optional
                               },
                               ...
                             ],
@@ -48,6 +48,7 @@ NoSQL - NoSchema Object (JSON) store (Database: [CouchDB][couchone])
                               "bitmap":"{base64}", // images, flattened artwork
                               "x":123,
                               "y":123,
+                              "z":123,
                               "width":123,
                               "height":123
                             },
