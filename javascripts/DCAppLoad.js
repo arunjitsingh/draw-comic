@@ -174,6 +174,9 @@ $(document).ready(function() {
       $("#done-edit-layer").hide();
     },
     
+    "project-saved": function(evt) {
+      alert("Saved!");
+    },
     
     "change-pid-hash": function(evt) {
       var id = DC.APP.project._id;

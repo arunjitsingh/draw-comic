@@ -135,7 +135,7 @@
     
     "save": function(evt) {
       DC.APP.processForSaving();
-      
+      //console.log("will save");
       if (navigator.onLine) {
         DC.db.saveDoc(DC.APP.project, {
           success: function(data) {
@@ -152,6 +152,7 @@
           }
         });
       } else {
+        alert("You are not online. Offline storage is not yet implemented");
         DC.offlineStore.saveDoc(DC.APP.project);
       }
     },
@@ -217,7 +218,7 @@
     var data = {pages:[]};
     DC.APP.project.pages = [];
     var pages = $("#application .page-container");
-    console.log(pages);
+    //console.log(pages);
     pages.each(function(idx, page) {
       page = $(page);
       var p = page.data();
