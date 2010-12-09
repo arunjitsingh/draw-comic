@@ -1,0 +1,51 @@
+CACHE MANIFEST
+# version 0.2.2
+
+CACHE:
+#images: 2010=12=08
+resources/images/bg.png
+resources/fonts/Komika_Hand_Bold.ttf
+resources/fonts/RedFive.ttf
+resources/images/ADD.png
+resources/images/CLS.png
+resources/images/COLOR.png
+resources/images/DEL.png
+resources/images/EDIT-DONE.png
+resources/images/EDIT.png
+resources/images/FN.png
+resources/images/LAYER.png
+resources/images/LEFT.png
+resources/images/LOAD.png
+resources/images/LWID.png
+resources/images/LY.png
+resources/images/NEW.png
+resources/images/PG.png
+resources/images/SAVE.png
+resources/images/TEXT.png
+resources/images/UP.png
+resources/images/icon-chrome.png
+resources/images/icon-safari.png
+resources/images/loader.gif
+
+#html 2010=12=08
+parts.html
+help.html
+dialogs/error.html
+dialogs/info.html
+dialogs/new.html
+dialogs/open.html
+dialogs/signup.html
+
+#scripts 2010=12=08 1801
+javascripts/utilities.js
+javascripts/vendor/jquery/ui.js
+javascripts/vendor/jquery/db.js
+javascripts/vendor/underscore.js
+javascripts/vendor/sha1.js
+
+#favicon
+/favicon.ico
+
+NETWORK:
+/_session
+/draw-comic

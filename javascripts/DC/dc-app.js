@@ -1,3 +1,52 @@
+(function(/*jQuery*/$, /*underscore*/_){
+  
+  var json = JSON.stringify;
+  var parseJS = JSON.parse;
+  
+  /*Namespace object DC*/
+  window.DC = {};
+  
+  DC.$ = $({});  // uh-oh! need to use jQ's eventing system
+  
+  DC.USER = {};
+  
+  DC.viewRoot = $("#application");
+  
+  DC.db = $.couch.db('draw-comic');
+  
+  DC.offlineStore = {
+    name: "draw-comic",
+    handle: "dc",
+    use: false,
+    saveDoc: function(doc) {
+      if ('localStorage' in window) {
+        window.localStorage.setItem(DC.offlineStore.name, json(doc));
+        window.localStorage.setItem(DC.offlineStore.handle, json(true));
+        return true;
+      }
+    },
+    openDoc: function(doc) {
+      if ('localStorage' in window) {
+        return window.localStorage.getItem(this.name);
+      }
+      return null;
+    }
+  };
+  
+  
+  DC.__uid = 0;
+  DC.uid = function() {
+    return "dc" + Math.floor(DC.__uid += Math.random()*1000);
+  };
+
+  //current state
+  DC.current = {
+    'project': {},
+    'page': null,
+    'layer': null
+  };
+  
+})(window.jQuery, window._);
 (function(DC) {
   if (!DC) {
     throw new Error("Application not initialized: DC/core.js missing");
@@ -341,5 +390,180 @@
     });
   };
   
+  
+})(window.DC);
+(function(DC) {
+  if (!DC) {
+    throw new Error("Application not initialized: DC/core.js missing");
+  }
+  
+  var kDefaults = {
+    bitmap: "",
+    x: 0,
+    y: 0,
+    z: 0,
+    width: 300,
+    height: 300
+  };
+  var kDefaultContext = {
+    strokeStyle: "#000000",
+    lineWidth: 1.0
+  };
+  
+  DC.Layer = {};
+  DC.Layer.create = function(data) {
+    var layer = {};
+    _.extend(layer, kDefaults, data || {});
+    return layer;
+  };
+  DC.Layer.convert = function(layer) {
+    return {
+      bitmap: layer.bitmap,
+      x: layer.x,
+      y: layer.y,
+      z: layer.z,
+      width: layer.width,
+      height: layer.height
+    };
+  };
+  
+  
+  DC.LayerView = {};
+  DC.LayerView.create = function(layer) {
+    
+    var node = $("#load-box .layer").first().clone();
+    node.attr({width: layer.width,height: layer.height});
+    node.css({position: 'absolute', top: layer.y, left: layer.x});
+    
+    //node._index = DC.APP.newLayerIndex();
+
+    if (layer.bitmap) {
+      var img = new Image();
+      img.src = layer.bitmap;
+      img.onload = function() {
+        var cvs = node.is("canvas") ? node[0] : node.find("canvas").first()[0];
+        var ctx = cvs.getContext('2d');
+        cvs.setAttribute("width", img.width);
+        cvs.setAttribute("height", img.height);
+        _.extend(layer, {width: img.width, height:img.height});
+        var ctx = cvs.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        layer.bitmap = cvs.toDataURL();
+        //console.log(layer.bitmap);
+        var data = node.data();
+        _.extend(data, layer);
+        node.data(data);
+      };
+    }
+    node[0]._uid = DC.uid();
+    node.data(layer);
+    return node;
+  };
+  
+})(window.DC);(function(DC) {
+  if (!DC) {
+    throw new Error("Application not initialized: DC/core.js missing");
+  }
+  
+  var kDefaults = {
+    layers: [],
+    texts: []
+  };
+  
+  DC.Page = {};
+  DC.Page.create = function(data) {
+    var page = {};
+    _.extend(page, kDefaults, data || {});
+    return page;
+  };
+  DC.Page.convert = function(page) {
+    return {
+      layers: page.layers,
+      texts: page.texts
+    };
+  };
+  
+  DC.PageView = {};
+  DC.PageView.create = function(page) {
+    var node = $("#load-box .page-container").first().clone();
+    node.css({position: 'absolute', top: 0, left: 0});
+    node.data(page);
+    //node._index = DC.APP.newPageIndex();
+    node[0]._uid = DC.uid();
+    return node;
+  };
+  
+  
+})(window.DC);(function(DC) {
+  if (!DC) {
+    throw new Error("Application not initialized: DC/core.js missing");
+  }
+  
+  var kDefaults = {
+    author: "",
+    name: "New Project",
+    type: 'project',
+    pages: []
+  };
+  
+  var pageKeys = ["layers", "texts"];
+  
+  DC.Project = {};
+  DC.Project.create = function(attr) {
+    var project = {};
+    _.extend(project, kDefaults, attr || {});
+    
+    if (project.pages) {
+      _.cleanArray(project.pages);
+    }
+    _.each(pageKeys, function(k) {
+      _.cleanArray(project.pages[k]);
+    });
+    
+    
+    return project;
+  };
+  
+
+})(window.DC);(function(DC) {
+  if (!DC) {
+    throw new Error("Application not initialized: DC/core.js missing");
+  }
+  
+  var kDefaults = {
+    text: "",
+    x: 0,
+    y: 0,
+    z: 0,
+    width: 200,
+    height: 50
+  };
+  
+  DC.Text = {};
+  DC.Text.create = function(data) {
+    var text = {};
+    _.extend(text, kDefaults, data || {});
+    return text;
+  };
+  
+  DC.Text.convert = function(text) {
+    return {
+      text: text.text,
+      x: text.x,
+      y: text.y,
+      z: text.z,
+      width: text.width,
+      height: text.height
+    };
+  };
+  
+  DC.TextView = {};
+  DC.TextView.create = function(text) {
+    var node = $("#load-box .text-line").first().clone();
+    node.attr({width: text.width, height: text.height});
+    node.css({position: 'absolute', top: text.y, left: text.x});
+    node.data(text);
+    return node;
+  };
   
 })(window.DC);

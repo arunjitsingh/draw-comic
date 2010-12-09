@@ -18,22 +18,21 @@
       s.left = (($(window).width() - $(this).width()) / 2) + "px";
       s.top = (($(window).height() - $(this).height()) / 2) + "px";
     });
-  }
+  };
 
   $.showDialog = function(url, options) {
     options = options || {};
     options.load = options.load || function() {};
     options.cancel = options.cancel || function() {};
-    options.validate = options.validate || function() { return true };
+    options.validate = options.validate || function() { return true; };
     options.submit = options.submit || function() {};
 
-    var overlay = $('<div id="overlay" style="z-index:1001"></div>')
-      .css("opacity", "0");
-    var dialog = $('<div id="dialog" style="z-index:1002;position:fixed;display:none;"></div>');
+    var overlay = $('<div id="overlay" style="z-index:11999"></div>');
+    overlay.css("opacity", "0");
+    var dialog = $('<div id="dialog" style="z-index:12000;position:fixed;display:none;"></div>');
     if ($.browser.msie) {
-      var frame = $('<iframe id="overlay-frame" style="z-index:1000;border:none;margin:0;padding:0;position:absolute;width:100%;height:100%;top:0;left:0" src="javascript:false"></iframe>')
-        .css("opacity", "0").appendTo(document.body);
-      if (parseInt($.browser.version)<7) {
+      var frame = $('<iframe id="overlay-frame" style="z-index:11998;border:none;margin:0;padding:0;position:absolute;width:100%;height:100%;top:0;left:0" src="javascript:false"></iframe>').css("opacity", "0").appendTo(document.body);
+      if (parseInt($.browser.version, 10) < 7) {
         dialog.css("position", "absolute");
         overlay.css("position", "absolute");
         $("html,body").css({width: "100%", height: "100%"});
@@ -45,6 +44,7 @@
     $(document).keydown(function(e) {
       if (e.keyCode == 27) dismiss(); // dismiss on escape key
     });
+    
     function dismiss() {
       dialog.fadeOut("fast", function() {
         $("#dialog, #overlay, #overlay-frame").remove();
@@ -63,7 +63,7 @@
       $(html).appendTo(dialog);
       dialog.removeClass("loading").addClass("loaded").centerBox().each(function() {
         options.load(dialog.children()[0]);
-        $(":input:first", dialog).each(function() { this.focus() });
+        $(":input:first", dialog).each(function() { this.focus(); });
         $("button.cancel", dialog).click(function() { // dismiss on cancel
           dismiss();
           options.cancel();
@@ -91,6 +91,6 @@
         });
       });
     });
-  }
+  };
 
 })(jQuery);

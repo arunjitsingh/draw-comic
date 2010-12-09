@@ -1,0 +1,94 @@
+<h1 id="dc-h" class="clickable">D&#x25CF;C</h1>
+<!-- LOGIN CONTROLS -->
+<div id="login-toolbar" class="toolbar-container">
+  <div class="toolbar horizontal">
+    <form action="" method="post" id="login-form">
+      <table>
+        <tr>
+          <td><input id="username" type="text" name="name" placeholder="Username"></td>
+          <td><input id="password" type="password" name="password" placeholder="Password"></td>
+          <td><button type="submit" id="login">Login</button></td>
+          <td><button id="signup">SignUp</button></td>
+        </tr>
+      </table>
+    </form>
+    <form action="" method="post" id="logout-form" style="display:none">
+      <table>
+        <tr>
+          <td><span id="user"></span></td>
+          <td><button type="submit" id="logout">Logout</button></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+
+<!-- PROJECT CONTROLS -->
+<div id="project-toolbar" class="toolbar-container">
+  <div class="toggle clickable"><img src="resources/images/FN.png" title="Show/Hide Project controls"></div>
+  <div class="toolbar vertical hidden">
+    <span id="new-project" class="button clickable"><img src="resources/images/NEW.png" title="New Project"></span>
+    <span id="open-project" class="button clickable"><img src="resources/images/LOAD.png" title="Load Project"></span>
+    <span id="save-project" class="button clickable"><img src="resources/images/SAVE.png" title="Save"></span>
+  </div>
+</div>
+
+<!-- PAGE CONTROLS -->
+<div id="page-toolbar" class="toolbar-container">
+  <span class="toggle clickable"><img src="resources/images/PG.png" title="Show/Hide page controls"></span>
+  <div class="toolbar vertical hidden">
+    <span id="new-page" class="button clickable"><img src="resources/images/NEW.png" title="New Page"></span>
+    <hr>
+    <span id="add-layer" class="button clickable"><img src="resources/images/LAYER.png" title="Add layer"></span>
+    <span id="add-text" class="button clickable" style="display:none"><img src="resources/images/TEXT.png" title="Add text"></span>
+  </div>
+</div>
+
+<!-- LAYER CONTROLS -->
+<div id="layer-toolbar" class="toolbar-container">
+  <span class="toggle clickable"><img src="resources/images/LY.png" title="Show/Hide layer controls"></span>
+  <div class="toolbar vertical hidden">
+    <span id="edit-layer" class="button clickable"><img src="resources/images/EDIT.png" title="Edit layer"></span>
+    <span id="done-edit-layer" style="display:none" class="button clickable"><img src="resources/images/EDIT-DONE.png" title="Edit layer"></span>
+    <span id="ch-color" class="button clickable" style="display:none"><img src="resources/images/COLOR.png" title="Line Color"></span>
+    <span id="ch-linewidth" class="button clickable" style="display:none"><img src="resources/images/LWID.png" title="Line Width"></span>
+    <hr>
+    <span id="clear-layer" class="square button clickable" style="display:none"><img src="resources/images/CLS.png" title="Clear Layer"></span>
+    <span id="delete-layer" class="button clickable"><img src="resources/images/DEL.png" title="Delete Layer"></span>
+  </div>
+</div>
+
+<!-- UPLOAD TOOLBAR -->
+<div id="upload-toolbar" class="toolbar-container">
+  <div class="toggle clickable"><img src="resources/images/UP.png" title="Upload image"></div>
+  <div class="toolbar horizontal hidden">
+    <form action="" method="post" id="upload-form">
+      <table>
+        <tr>
+          <td>Image:</td>
+          <td><input type="file" name="_attachments"
+                accept="image/png, image/jpg, image/jpeg, image/bmp"></td>
+          <td><button type="submit">Upload</button></td>
+        </tr>
+      </table>
+      <input type="hidden" name="_rev" value="0">
+    </form>
+  </div>
+</div>
+
+<div id="app-container">
+  <div id="application"></div>
+</div>
+
+<div id="load-box" style="display:none">
+  <div class="page-container" width="745" height="1050">
+    <canvas class="page" width="745" height="1050"></canvas>
+  </div>
+  <canvas class="layer"></canvas>
+  <div class="input-popup">
+    <input type="text">
+  </div>
+  <div class="text-box dc-text"></div>
+  <div class="text-line dc-text"></div>
+</div>
+

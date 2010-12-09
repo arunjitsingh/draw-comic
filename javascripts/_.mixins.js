@@ -19,5 +19,10 @@ _.mixin({
         i++;
       }
     }
+  },
+  
+  areEqual: function(o1, o2, allowempty) {
+    allowempty = allowempty ? true : false;    
+    return (allowempty && (o1 === o2)) || (!_.isEmpty(o1) && !_.isEmpty(o2) && (o1 === o2));
   }
 });

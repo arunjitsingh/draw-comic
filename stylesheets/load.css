@@ -1,0 +1,119 @@
+@font-face {
+  font-family: 'RedFive';
+  src: local('☺'), url('../resources/fonts/RedFive.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Komika Hand';
+  src: local('☺'), url('../resources/fonts/Komika_Hand_Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+html, body, {
+  margin:0; padding:0;
+  width:100%;height:100%;
+}
+
+h1, h4 {
+  margin:0; padding: 0;
+  width: 100%;
+}
+
+body {
+  background-color: #AAA;
+  background-image: url(../resources/images/bg.png);
+}
+
+#dc-overlay {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 11999;
+  background-color: rgba(0,0,0,0.65);
+}
+.close-button{
+  position:absolute; top:-10px; left: -10px;
+  width: 20px; height: 20px;
+  font: 16px "Courier";
+  color: white;
+  background-color: black;
+  border-radius: 11px;
+  -webkit-border-radius: 11px;
+  -moz-border-radius: 11px;
+  border: 2px solid white;
+  text-align: center;
+}
+#info {
+  position: absolute;
+  width: 700px; left:50%; margin-left: -366px;
+  height: 300px; top:150px;
+  padding: 20px 20px 0px 20px;
+  border-radius: 15px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  box-shadow: 0 0 15px #000;
+  -webkit-box-shadow: 0 0 15px #000;
+  -moz-box-shadow: 0 0 15px #000;
+  background-color: rgba(255, 255, 255, 0.75);
+  background-image: -webkit-gradient(linear, left top, left bottom,
+                               from(rgba(51,51,68,0.9)),
+                               to(rgba(0,0,0,0.9)));
+  background: -moz-linear-gradient(-90deg, #334, #000);
+  border: 2px solid #fff;
+  text-align: center;
+  z-index: 12000;
+}
+#info h1 {
+  width: 100%;
+  top: 5px;
+  text-transform: uppercase;
+  text-align: center;
+  font: 65px "RedFive";
+  color: #CA0;
+  text-shadow: 0 -2px 2px #fff, 0 2px 2px #000;
+  letter-spacing: 3px;
+}
+#info h4 {
+  text-shadow: 0 -1px 1px #fff, 0 1px 1px #000;
+  font: 25px 'Komika Hand' bold;
+  color: #777;
+  text-align: center;
+  width: 100%;
+  letter-spacing: 5px;
+}
+
+#info #loader {
+  margin: 80px 0 0 0;
+}
+
+#info ul {
+  list-style: none;
+  margin: 0; padding: 0;
+}
+#info ul li {
+  display: inline;
+}
+#info #help {
+  position: absolute;
+  color: white; font: 14px "Komika Hand";
+  background-color: rgba(20, 20, 20, 0.30);
+  width: 570px; left: 50%; margin-left: -285px;
+  text-align: center;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  box-shadow: inset 0 0 5px #000;
+  -webkit-box-shadow: inset 0 0 5px #000;
+  -moz-box-shadow: inset 0 0 5px #000;
+  padding: 5px 0 15px 0;
+  margin-top: 10px;
+}
+#info #help table td {
+  margin:0; padding:0;
+  min-width: 64px;
+  text-align: left;
+}
+#info #help .help-footer {
+  font-size: 12px;
+}

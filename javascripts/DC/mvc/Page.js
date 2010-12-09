@@ -24,8 +24,10 @@
   DC.PageView = {};
   DC.PageView.create = function(page) {
     var node = $("#load-box .page-container").first().clone();
+    node.css({position: 'absolute', top: 0, left: 0});
     node.data(page);
     //node._index = DC.APP.newPageIndex();
+    node[0]._uid = DC.uid();
     return node;
   };
   

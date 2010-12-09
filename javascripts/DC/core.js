@@ -13,9 +13,11 @@
   DC.viewRoot = $("#application");
   
   DC.db = $.couch.db('draw-comic');
+  
   DC.offlineStore = {
     name: "draw-comic",
     handle: "dc",
+    use: false,
     saveDoc: function(doc) {
       if ('localStorage' in window) {
         window.localStorage.setItem(DC.offlineStore.name, json(doc));

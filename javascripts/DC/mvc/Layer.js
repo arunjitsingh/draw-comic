@@ -61,7 +61,7 @@
         node.data(data);
       };
     }
-    
+    node[0]._uid = DC.uid();
     node.data(layer);
     return node;
   };
