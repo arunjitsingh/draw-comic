@@ -54,7 +54,9 @@
         _.extend(layer, {width: img.width, height:img.height});
         var ctx = cvs.getContext('2d');
         ctx.drawImage(img, 0, 0);
-        layer.bitmap = cvs.toDataURL();
+        try {
+          layer.bitmap = cvs.toDataURL("image/png");
+        } catch(e) {console.error("Could not convert to DataURL", e);}
         //console.log(layer.bitmap);
         var data = node.data();
         _.extend(data, layer);

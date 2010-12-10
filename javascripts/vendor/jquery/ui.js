@@ -803,7 +803,7 @@ b.dequeue()})})}})(jQuery);
     options.cancel = options.cancel || function() {};
     options.validate = options.validate || function() { return true; };
     options.submit = options.submit || function() {};
-
+    $("#dialog").remove();
     var overlay = $('<div id="overlay" style="z-index:11999"></div>');
     overlay.css("opacity", "0");
     var dialog = $('<div id="dialog" style="z-index:12000;position:fixed;display:none;"></div>');

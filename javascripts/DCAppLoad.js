@@ -1,4 +1,20 @@
 (function() {
+    
+  var doc = $(document);
+  var body = $(document.body);
+  
+  doc
+    .ajaxSend(function() {
+      DC.$.trigger("loading-start");
+    })
+    .ajaxComplete(function() {
+      DC.$.trigger("loading-end");
+    })
+    .ajaxError(function() {
+      DC.$.trigger("loading-end");
+    });
+  
+  var URLRegex = DC.URLREGEX;
   
   $("#dc-h").dblclick(function() {
     var toolbars =  $(".toolbar-container .toolbar");
@@ -20,9 +36,27 @@
       submit: function(data, callback) {
         var pname = data.name || "untitled";
         var pid = data.id;
-        DC.APP.trigger("new", [pname, pid]);
+        if (!_.isEmpty(pid)) {
+          $.ajax({
+            url: DC.db.uri + pid,
+            type: "HEAD",
+            dataType: 'json',
+            success: function(d) {
+              // project found, pid not unique
+              callback({"id": "ID in use. Try another one"});
+            },
+            error: function(xhr, err) {
+              DC.APP.trigger("new", [pname, pid]);
+              callback();
+            }
+          });
+        } else {
+          callback();
+          DC.APP.trigger("new", [pname, pid]);
+        }
+        
         $("#application").empty();
-        callback();
+        //callback();
       },
       cancel: function() {}
     });
@@ -58,6 +92,10 @@
   });
   
   
+  $("#export-project").click(function() {
+    DC.APP.trigger("export");
+  });
+  
   $("#new-page").click(function() {
     if ($("#application .page-container").length >= 1) {
       DC.$.trigger("error", ["Experimental soft limit", "Limited to 1 page in experimental versions"]);
@@ -89,11 +127,7 @@
     }
     //DC.APP.selectedLayer.trigger("delete");
   });
-  $("#add-text").click(function() {
-    DC.APP.trigger("addText");
-  });
-  
-  
+
   var form = $("#upload-form");
   form.submit(function(evt) {
     evt.preventDefault();
@@ -112,9 +146,10 @@
     }
     var ext = fileName.substring(fileName.lastIndexOf(".")+1);
     if (!(/(jpe?g)|(bmp)|(png)/gi).test(ext)) {
-      alert("Image types JPEG, BMP, PNG only");
+      DC.$.trigger("error", ["Can't upload", "Image types JPEG, BMP, PNG only"]);
       return false;
     }
+    DC.$.trigger("loading-start");
     form.ajaxSubmit({
       url: DC.db.uri + id,
       type: "PUT",
@@ -132,6 +167,7 @@
           }
           form.find("input[name=_attachments]").val("");
           DC.APP.trigger("addImage", [fileName]);
+          DC.$.trigger("loading-end");
         }
       },
       error: function(xhr, error, status) {
@@ -143,6 +179,63 @@
     return false;
   });
   
+  $("#image-url").click(function() {
+    if (!(DC.APP.project && DC.APP.selectedPage)) {
+      DC.$.trigger("error", ["Can't Open URL", "Create a project & page first."]);
+      return false;
+    }
+    $.showDialog('dialogs/url.html', {
+      submit: function(data, callback) {
+        var url = data.url;
+        if (!URLRegex.test(url)) {
+          callback({url: "Invalid URL"});
+          return;
+        }
+        
+        DC.APP.trigger("addImage", [url, true]);
+        callback();
+      }
+    });
+  });
+  
+  $("#google").click(function() {
+    
+    if (!navigator.onLine) {
+      DC.$.trigger("error", ["Google Images Unavailable", "You are not connected to the internet"]);
+      return;
+    }
+    if (!(DC.APP.project && DC.APP.selectedPage)) {
+      DC.$.trigger("error", ["Can't Search", "Create a project & page first."]);
+      return false;
+    }
+    $.showDialog('dialogs/google.html', {
+      
+      submit: function(data, callback) {
+        console.log("will search", data);
+        
+        var keyw = data.keyword;
+        var elt = $("#dialog #search-results");
+        
+        if (keyw) {
+          GOOG.trigger("image-search", [keyw, elt, function(args) {
+            if (args) {
+              callback(args);
+              return;
+            }
+            elt.find("img").dblclick(function() {
+              var url = this.src;
+              DC.APP.trigger("addImage", [url, true]);
+              callback();
+            });
+          }]);
+        } else {
+          callback({"keyword": "Required field"});
+        }
+      }
+    });
+    
+  });
+  
   
   $("#dc-h").click(function() {
     $("#login-toolbar .toolbar").toggleClass("hidden");
@@ -152,6 +245,7 @@
     if (!username || !password) {
       return;
     }
+    DC.$.trigger("loading-start");
     $.couch.login({
       name: username,
       password: password,
@@ -160,12 +254,14 @@
         if (_.isFunction(callback)) {
           callback();
         }
+        DC.$.trigger("loading-end");
       },
       error: function(status, error, reason) {
         DC.$.trigger("error", ["Error logging in", reason, [status, error]]);
         if (_.isFunction(callback)) {
           callback();
         }
+        DC.$.trigger("loading-end");
       }
     });
   }
@@ -181,6 +277,7 @@
     $.couch.logout({
       success: function(response) {
         DC.$.trigger("logged-out");
+        
       },
       error: function(status, error, reason) {
         DC.$.trigger("error", ["Error logging out", reason, [status, error]]);
@@ -189,24 +286,6 @@
     return false;
   });
   
-  function doSignup(name, password, callback, runLogin) {
-    $.couch.signup({name : name}, password, {
-      success : function() {
-        if (runLogin) {
-          doLogin(name, password, callback);            
-        } else {
-          callback();
-        }
-      },
-      error : function(status, error, reason) {
-        if (error == "conflict") {
-          callback({name : "Name '"+name+"' is taken"});
-        } else {
-          callback({name : "Signup error:  "+reason});
-        }
-      }
-    });
-  }
   
   $("#login-form #signup").click(function(evt) {
     evt.preventDefault();
@@ -217,15 +296,31 @@
       submit: function(data, callback) {
         var name = data.username;
         var pass = data.password;
-        
+        DC.$.trigger("loading-start");
         if (!name || !(/^[^_]\w+$/gi).test(name)) {
           callback({"username": "Invalid username"});
+          return;
         }
         if (!pass || !(/^.+$/gi).test(pass)) {
           callback({"password": "Invalid password"});
+          return;
         }
-        
-        doSignup(name, pass, callback, true);
+        //console.log(name, pass);
+        $.couch.signup({name : name}, pass, {
+          success : function() {
+            doLogin(name, pass);            
+            DC.$.trigger("info", ["Success!", "Signup was successful.<br>The app should sign you in automatically"]);
+            DC.$.trigger("loading-end");
+          },
+          error : function(status, error, reason) {
+            if (error == "conflict") {
+              callback({"username": "Username '"+name+"' is taken"});
+            } else {
+              callback({"username": "Signup error:  "+reason});
+            }
+            DC.$.trigger("loading-end");
+          }
+        });
       }
     });
   });
@@ -251,7 +346,6 @@
       $("#login-toolbar .toolbar").addClass("loggedin");
       $("#project-toolbar .toolbar").removeClass("hidden");
       if (!update) DC.$.trigger("update-userCtx");
-      
     },
     "logged-out": function(evt, update) {
       $("#logout-form").hide().find("#user").text("");
@@ -269,13 +363,22 @@
     },
     
     "project-saved": function(evt) {
+      DC.$.trigger("change-pid-hash");
       DC.$.trigger("info",
         ["Saved!", "ID: "+DC.APP.project._id+"<br>You can now use the page URL to share"]);
     },
     
     "change-pid-hash": function(evt) {
       var id = DC.APP.project._id;
-      window.location.hash = id;
+      if (id) window.location.hash = id;
+      else window.location.hash = null;
+    },
+    
+    "loading-start": function(evt) {
+      body.addClass('isloading');
+    },
+    "loading-end": function(evt) {
+      body.removeClass('isloading');
     },
     
     "update-userCtx": function() {
@@ -294,6 +397,7 @@
             DC.$.trigger("logged-in", [DC.USER.name, true]);
           } else {
             // user is not logged in
+            DC.USER = {};
             DC.$.trigger("logged-out", [true]);
           }
         },
@@ -313,6 +417,8 @@
           elt.find("h4").text(title);
           elt.find("div.info").html(info);
           $("#dialog").centerBox();
+        },
+        cancel: function() {
         }
       });
     },
@@ -326,6 +432,8 @@
           elt.find("h4").text(error);
           elt.find("div.error").html(reason);
           $("#dialog").centerBox();
+        },
+        cancel: function() {
         }
       });
       console.error("Error:", error, ":", reason, "(", info, ")");
@@ -337,6 +445,9 @@
     window.loadComplete();
   }
   
-  // TEST TO CHECK IF localStorage NEEDS TO BE USED
+  // EXTREMELY DANGEROUS. YOU SHOULD NEVER DO THIS
+  window.alert = function(what) {
+    console.info("::alert::", what);
+  };
   
 })();

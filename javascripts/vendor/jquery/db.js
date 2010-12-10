@@ -103,13 +103,14 @@
     userDb : function(callback) {
       $.couch.session({
         success : function(resp) {
+          //console.log("userdb", resp);
           var userDb = $.couch.db(resp.info.authentication_db);
           callback(userDb);
         }
       });
     },
 
-    signup: function(user_doc, password, options) {      
+    signup: function(user_doc, password, options) {
       options = options || {};
       // prepare user doc based on name and password
       user_doc = prepareUserDoc(user_doc, password);

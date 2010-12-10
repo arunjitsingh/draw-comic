@@ -39,11 +39,7 @@
     return "dc" + Math.floor(DC.__uid += Math.random()*1000);
   };
 
-  //current state
-  DC.current = {
-    'project': {},
-    'page': null,
-    'layer': null
-  };
+  DC.URLREGEX = 
+    /^https?:\/\/[a-zA-Z0-9.\-]+\.[a-zA-Z0-9]+\/([\/a-zA-Z0-9\-.])+?[a-zA-Z0-9\-.]+\.(jpe?g|png|bmp)$/;
   
 })(window.jQuery, window._);

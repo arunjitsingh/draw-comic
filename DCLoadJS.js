@@ -10,7 +10,6 @@ Sexy
   .js('javascripts/DC/mvc/Project.js')
   .js('javascripts/DC/mvc/Page.js')
   .js('javascripts/DC/mvc/Layer.js')
-  .js('javascripts/DC/mvc/Text.js')
   .js('javascripts/DCAppLoad.js')
   .js('javascripts/DCHashCheck.js')
   .js('javascripts/vendor/sha1.js');

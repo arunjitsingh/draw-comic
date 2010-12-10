@@ -30,7 +30,12 @@ body {
   position: fixed; top: 0; left: 0;
   width: 100%; height: 100%;
   z-index: 11999;
-  background-color: rgba(0,0,0,0.65);
+  background-color: rgba(0,0,0,1);
+  -webkit-transition: background-color 150ms;
+}
+#dc-overlay.hidden {
+  background-color: transparent;
+  z-index: -11111;
 }
 .close-button{
   position:absolute; top:-10px; left: -10px;

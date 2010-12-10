@@ -30,7 +30,11 @@
       success:function(response) {
         var cache = DC.USER.cachedProjectsList;
         var projects = response.rows;
-        var ul = {};$("<ul></ul>");
+        if (!projects.length) {
+          elt.empty().append('<span style="color:#AAA;text-align:center">No projects</span>');
+          return;
+        }
+        var ul = {};
         if (cache && projects === cache.data().list) {
           ul = cache;
           //console.log("using cache", projects, cache.data().list);
@@ -52,6 +56,7 @@
           DC.USER.cachedProjectsList = ul;
           DC.USER.cachedProjectsList.data({list:projects});
           elt.empty().append(ul);
+          elt.parents("#dialog").centerBox();
         }
         
       }
@@ -123,54 +128,16 @@
     //view.drawable();
   };
   
-  DC.APP.textify = function(view) {
-    view.draggable({
-      stop: function() {
-        var node = $(this);
-        var data = node.data();
-        data.x = node.position().left;
-        data.y = node.position().top;
-        node.data(data);
-      }
-    });
-    view.editable({
-      finishedEditing: function() {
-        var node = $(this);
-        var data = node.data();
-        data.text = node.html();
-        node.data(data); 
-      }
-    });
-  };
   
-  // Event Handlers
+  // EVENT HANDLERS
   DC.APP.bind({
     "new": function(evt, pname, pid) {
       DC.APP.project = DC.Project.create();
-      if (!_.isEmpty(pname)) {
-        DC.APP.project.name = pname;
-      }
-      DC.APP.trigger("check-pid", [pid]);
-      DC.$.trigger("new-project");
-    },
-    
-    "check-pid": function(evt, pid) {
+      DC.APP.project.name = pname || "untitled";
       if (!_.isEmpty(pid)) {
-        $.ajax({
-          url: DC.db.uri + pid,
-          type: "HEAD",
-          dataType: 'json',
-          success: function(d) {
-            // project found, pid not unique
-            pid = prompt("ID in use. Try another one");
-            DC.APP.trigger("check-pid", [pid]);
-          },
-          error: function(xhr, err) {
-            DC.APP.project._id = pid;
-            DC.$.trigger('change-pid-hash');
-          }
-        });
+        DC.APP.project._id = pid;
       }
+      DC.$.trigger("new-project");
     },
     
     "open": function(evt, id) {
@@ -194,9 +161,12 @@
           },
           error: function(status, error, reason) {
             DC.$.trigger("error", 
-                      ["Couldn't load the project", reason, [status, error]]);
+                      ["Couldn't load the project", "Project doesn't exist", [reason, status, error]]);
           }
         });
+      } else {
+        DC.$.trigger("error", 
+                  ["Couldn't load the project", "Invalid ID"]);
       }
     },
     
@@ -206,9 +176,20 @@
                 ["Can't save the project", "Create a new project"]);
         return;
       }
+      if (!(DC.USER && DC.USER.name)) {
+        DC.$.trigger("error",
+          ["Couldn't save the project", "You are not logged in"]);
+        return;
+      }
+      if (!DC.USER || !(DC.USER.name === DC.APP.project.author)) {
+        DC.$.trigger("error",
+          ["Couldn't save the project", "You are not the author of this document"]);
+        return;
+      }
       DC.APP.processForSaving();
       //console.log("will save");
       if (navigator.onLine || !DC.offlineStore.use) {
+        // this is either online or offline on localhost
         DC.db.saveDoc(DC.APP.project, {
           success: function(data) {
             if (data.ok) {
@@ -231,8 +212,11 @@
       }
     },
     
-    "addImage": function(evt, fileName) {
-      var uri = DC.db.uri + DC.APP.project._id + "/" + fileName;
+    
+    "addImage": function(evt, uri, absolute) {
+      if (!absolute) {
+        uri = DC.db.uri + DC.APP.project._id + "/" + uri;
+      }
       var data = {
         bitmap: uri,
         x: 0, y: 0, z: 0
@@ -259,19 +243,6 @@
       
       DC.APP.layerify(lv);
     },
-    "updateLayer": function(evt, layer) {
-      
-    },
-    "deleteLayer": function(evt, layer, page) {},
-    
-    "addText": function(evt, data) {
-      var text = DC.Text.create(data || {});
-      var tv = DC.TextView.create(text);
-      DC.APP.selectedPage.append(tv);
-    },
-    "updateText": function(evt, object, page) {},
-    "deleteText": function(evt, object, page) {},
-    
     
     
     "render": function(evt) {
@@ -281,12 +252,30 @@
         _.each(p.layers, function(l) {
           DC.APP.trigger("addLayer", [l]);
         });
-        
-        _.each(p.texts, function(t) {
-          DC.APP.trigger("addText", [t]);
-        });
       });
+    },
+    
+    
+    "export": function(evt) {
+      var page = $("#application .page-container").first();
+      var canvas = $("canvas.page", page).clone();
+      var context = canvas[0].getContext('2d');
+      $.each($(".layer", page), function(idx, layer) {
+        layer = $(layer);
+        var x = layer.position().left;
+        var y = layer.position().top;
+        layer = layer[0];
+        context.drawImage(layer, x, y);
+      });
+      try {
+        var data = canvas[0].toDataURL();
+        window.open(data, (DC.APP.project || {name:"untitled"})['name'], 745, 1050);
+      } catch(e) {
+        DC.$.trigger("error", ["Can't Export", "Cross domain policy prohibits converting external images", [e]]);
+      }
+      
     }
+    
     
   });
   
@@ -307,14 +296,6 @@
         var l = layer.data();
         //console.log(l);
         data.pages[idx].layers.push(DC.Layer.convert(l));
-      });
-
-      var texts = $(".dc-text", page);
-      texts.each(function(ti, text) {
-        text = $(text);
-        var t = text.data();
-        //console.log(t);
-        data.pages[idx].texts.push(DC.Text.convert(t));
       });
       
     });

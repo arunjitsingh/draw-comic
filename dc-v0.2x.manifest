@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# version 0.2.2
+# version 0.2.5go
 
 CACHE:
 #images: 2010=12=08
@@ -23,11 +23,13 @@ resources/images/PG.png
 resources/images/SAVE.png
 resources/images/TEXT.png
 resources/images/UP.png
+resources/images/WEB.png
+resources/images/DOWN.png
 resources/images/icon-chrome.png
 resources/images/icon-safari.png
 resources/images/loader.gif
 
-#html 2010=12=08
+#html/css 2010=12=10 1800
 parts.html
 help.html
 dialogs/error.html
@@ -35,8 +37,10 @@ dialogs/info.html
 dialogs/new.html
 dialogs/open.html
 dialogs/signup.html
+stylesheets/load.css
+stylesheets/app.css
 
-#scripts 2010=12=08 1801
+#scripts 2010=12=10 1800
 javascripts/utilities.js
 javascripts/vendor/jquery/ui.js
 javascripts/vendor/jquery/db.js
@@ -47,5 +51,4 @@ javascripts/vendor/sha1.js
 /favicon.ico
 
 NETWORK:
-/_session
-/draw-comic
+*
