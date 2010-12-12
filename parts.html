@@ -1,4 +1,4 @@
-<h1 id="dc-h" class="clickable">D&#x25CF;C</h1>
+<h1 id="dc-h" class="draw-comic clickable">D&#x25CF;C</h1>
 <div id="loading-bar" class="hidden"><img src="resources/images/loader.gif"></div>
 <!-- LOGIN CONTROLS -->
 <div id="login-toolbar" class="toolbar-container">
@@ -31,6 +31,7 @@
     <span id="new-project" class="button clickable"><img src="resources/images/NEW.png" title="New Project"></span>
     <span id="open-project" class="button clickable"><img src="resources/images/LOAD.png" title="Load Project"></span>
     <span id="save-project" class="button clickable"><img src="resources/images/SAVE.png" title="Save"></span>
+    <span id="edit-project" class="button clickable"><img src="resources/images/EDIT.png" title="Edit Project Info."></span>
     <hr>
     <span id="export-project" class="button clickable"><img src="resources/images/DOWN.png" title="Export and Download"></span>
   </div>
@@ -82,8 +83,10 @@
 <!-- INTERNET BAR -->
 <div id="net-toolbar" class="toolbar-container">
   <div class="toolbar horizontal hidden">
-    <button id="image-url">URL...</button>
-    <button id="google">Google</button>
+    <button id="user-bitmaps" title="Your drawings" style="display:none">Drawings...</button>
+    <button id="user-uploads" title="Your uploaded images">Uploads...</button>
+    <button id="image-url" title="Load image from URL">URL...</button>
+    <button id="google" title="Search GoogleImages [experimental]">Google...</button>
   </div>
   <div class="toggle clickable"><img src="resources/images/WEB.png" title="Images on the Internet"></div>
 </div>

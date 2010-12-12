@@ -1,8 +1,12 @@
 CACHE MANIFEST
-# version 0.2.5go
-
+#
+#### version 0.2.8
+# 2010=12=12 0000
 CACHE:
-#images: 2010=12=08
+#### MAIN APPLICATION ####
+index.html
+
+#### images:
 resources/images/bg.png
 resources/fonts/Komika_Hand_Bold.ttf
 resources/fonts/RedFive.ttf
@@ -28,8 +32,10 @@ resources/images/DOWN.png
 resources/images/icon-chrome.png
 resources/images/icon-safari.png
 resources/images/loader.gif
+resources/images/vertical-thumb.png
 
-#html/css 2010=12=10 1800
+#### html/css ####
+canvas-error.html
 parts.html
 help.html
 dialogs/error.html
@@ -37,18 +43,40 @@ dialogs/info.html
 dialogs/new.html
 dialogs/open.html
 dialogs/signup.html
+dialogs/edit-project.html
+dialogs/google.html
+dialogs/url.html
 stylesheets/load.css
 stylesheets/app.css
 
-#scripts 2010=12=10 1800
-javascripts/utilities.js
+#### scripts ####
+javascripts/vendor/modernizr.js
+javascripts/vendor/jquery/base.js
 javascripts/vendor/jquery/ui.js
 javascripts/vendor/jquery/db.js
 javascripts/vendor/underscore.js
 javascripts/vendor/sha1.js
+javascripts/vendor/base64.js
+## custom plugins ##
+javascripts/utilities.js
+javascripts/_.mixins.js
+javascripts/jquery.plugins.js
+javascripts/google.js
+## application scripts ##
+javascripts/DC/core.js
+javascripts/DC/AppController.js
+javascripts/DC/mvc/Project.js
+javascripts/DC/mvc/Page.js
+javascripts/DC/mvc/Layer.js
+javascripts/DCAppLoad.js
+javascripts/DCHashCheck.js
+javascripts/DCAppCache.js
 
-#favicon
+#### favicon ####
 /favicon.ico
 
 NETWORK:
 *
+
+
+#### Copyright © 2010 Arunjit Singh ####

@@ -145,7 +145,9 @@ if (!String.prototype.w) {
   };
 }
 
+//
 // My own, Copyright ©2010, Arunjit Singh
+//
 if (!Number.partition) {
   Number.partition = function partition(number, parts) {
     var ret = [];

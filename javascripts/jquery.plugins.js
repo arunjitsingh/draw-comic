@@ -197,7 +197,7 @@
             'mousemove.draw': mouseMove
           });
         } else if (options.disable || !options.enable) {
-          $(document).removeClass("drawing-active")
+          $(document).removeClass("drawing-active");
           canvas.removeClass("drawable");
           canvas.unbind('mousedown.draw');
           canvas.unbind('mouseup.draw');
@@ -206,8 +206,13 @@
             canvas.draggable('enable');
           } catch(e) {}
           var data = canvas.data();
-          data.bitmap = canvas[0].toDataURL();
-          canvas.data(data);
+          try {
+            data.bitmap = canvas[0].toDataURL();
+            canvas.data(data);
+          } catch(e) {
+            alert("Cannot convert external images to DataURL");
+          }
+          
         }
       } else {
         throw new Error("Only <canvas> elements are drawable!");

@@ -31,7 +31,7 @@
         var cache = DC.USER.cachedProjectsList;
         var projects = response.rows;
         if (!projects.length) {
-          elt.empty().append('<span style="color:#AAA;text-align:center">No projects</span>');
+          elt.empty().append('<div style="color:#AAA;text-align:center">No projects</div>');
           return;
         }
         var ul = {};
@@ -129,6 +129,8 @@
   };
   
   
+  var isSaving = false;
+  /////////////////////////////////////////////////////////
   // EVENT HANDLERS
   DC.APP.bind({
     "new": function(evt, pname, pid) {
@@ -137,6 +139,7 @@
       if (!_.isEmpty(pid)) {
         DC.APP.project._id = pid;
       }
+      DC.APP.selectedPage = DC.APP.selectedLayer = null;
       DC.$.trigger("new-project");
     },
     
@@ -186,10 +189,14 @@
           ["Couldn't save the project", "You are not the author of this document"]);
         return;
       }
+      if (isSaving) {
+        DC.$.trigger("error", ["Can't Save the Project", "There is an active save operation"]);
+        return;
+      }
       DC.APP.processForSaving();
-      //console.log("will save");
       if (navigator.onLine || !DC.offlineStore.use) {
         // this is either online or offline on localhost
+        isSaving = true;
         DC.db.saveDoc(DC.APP.project, {
           success: function(data) {
             if (data.ok) {
@@ -198,10 +205,12 @@
               DC.$.trigger("change-pid-hash");
               DC.$.trigger("project-saved");
             }
+            isSaving = false;
           },
           error: function(status, error, reason) {
             DC.$.trigger("error", 
                       ["Couldn't save the project", reason, [status, error]]);
+            isSaving = false;
           }
         });
       } else if(DC.offlineStore.use) {
@@ -269,7 +278,9 @@
       });
       try {
         var data = canvas[0].toDataURL();
-        window.open(data, (DC.APP.project || {name:"untitled"})['name'], 745, 1050);
+        window.open(data, 
+          (DC.APP.project || {name:"untitled"})['name'] + ".png", 
+          "width=%@, height=%@".fmt(page.width(), page.height()));
       } catch(e) {
         DC.$.trigger("error", ["Can't Export", "Cross domain policy prohibits converting external images", [e]]);
       }
