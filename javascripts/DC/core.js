@@ -40,7 +40,9 @@
   };
 
   DC.URLREGEX = 
-    /^https?:\/\/[a-zA-Z0-9.\-]+\.[a-zA-Z0-9]+\/([\/a-zA-Z0-9\-.])+?[a-zA-Z0-9\-.]+\.(jpe?g|png|bmp)$/;
+    /^https?:\/\/[a-zA-Z0-9.\-]+\.[a-z]{2,3}\/([\/a-zA-Z0-9\-._])*[a-zA-Z0-9\-._]+\.(jpe?g|png|bmp)$/g;
+  
+  DC.EMAILREGEX = /^[a-zA-Z][a-zA-Z0-9._]*@[a-zA-Z0-9][a-zA-Z0-9._\-]*[a-z]{2,3}$/g;
   
   DC.GoogleImageSearch = "GOOGLE";
   DC.UserUploadImageSearch = "UPLOAD";

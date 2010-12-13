@@ -1,7 +1,7 @@
 CACHE MANIFEST
 #
 #### version 0.2.8
-# 2010=12=12 0000
+# 2010=12=13 0000
 CACHE:
 #### MAIN APPLICATION ####
 index.html
@@ -63,7 +63,7 @@ javascripts/_.mixins.js
 javascripts/jquery.plugins.js
 javascripts/google.js
 ## application scripts ##
-javascripts/DC/core.js
+#javascripts/DC/core.js
 javascripts/DC/AppController.js
 javascripts/DC/mvc/Project.js
 javascripts/DC/mvc/Page.js
