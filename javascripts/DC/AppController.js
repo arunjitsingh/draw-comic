@@ -35,7 +35,6 @@ AppController.js: Application Controller for the application
     var div = elt.find("#projects-list");
     var cache = DC.USER.cachedProjectsList;
     if (DC.USER.name && cache) {
-      //console.log("load:::cache", cache.data());
       div.empty().append(cache);
       DC.APP.findUserProjects(div);
     } else if (DC.USER.name) {
@@ -57,9 +56,9 @@ AppController.js: Application Controller for the application
         var ul = {};
         if (cache && projects === cache.data().list) {
           ul = cache;
-          //console.log("using cache", projects, cache.data().list);
+          // use cached list
         } else {
-          //console.log("reloading cache");
+          // reload cache
           ul = $("<ul></ul>");
           var li = $("<li>");
           _.each(projects, function(project) {
@@ -107,8 +106,6 @@ AppController.js: Application Controller for the application
       $('.page-container.selected').removeClass('selected');
       DC.APP.selectedPage = to;
       to.addClass("selected");
-      
-      //DC.$.trigger("page-changed");
     }
   };
   
@@ -118,7 +115,7 @@ AppController.js: Application Controller for the application
       $('.layer.selected').removeClass('selected');
       DC.APP.selectedLayer = to;
       to.addClass("selected");
-      //DC.$.trigger("layer-changed");
+      DC.$.trigger("layer-changed");
     }
   };
   
@@ -126,7 +123,6 @@ AppController.js: Application Controller for the application
     view.bind('click.DCPageSelect', function() {
       DC.APP.changeSelectedPage($(this));
     });
-    //view.drawable();
   };
   
   DC.APP.layerify = function(view) {
@@ -145,7 +141,6 @@ AppController.js: Application Controller for the application
     view.bind('click.DCLayerSelect', function() {
       DC.APP.changeSelectedLayer($(this));
     });
-    //view.drawable();
   };
   
   
@@ -172,7 +167,6 @@ AppController.js: Application Controller for the application
             if (data._id === id) {
               //valid project
               DC.APP.project = DC.Project.create(data);
-              //DC.APP.processForSaving();
               DC.$.trigger("change-pid-hash");
               DC.APP.trigger("render");
               DC.$.trigger("new-project");
@@ -258,18 +252,14 @@ AppController.js: Application Controller for the application
       var pv = DC.PageView.create(page);
       DC.viewRoot.append(pv);
       DC.APP.changeSelectedPage(pv);
-      //DC.APP.project.pages.push(page);
-      
       DC.APP.pagify(pv);
     },
-    //delete layer
+
     "addLayer": function(evt, data) {
       var layer = DC.Layer.create(data || {});
       var lv = DC.LayerView.create(layer);
       DC.APP.selectedPage.append(lv);
-      DC.APP.changeSelectedLayer(lv);
-      //DC.APP.project.pages[DC.APP.selectedPageIndex()].layers.push(layer);
-      
+      DC.APP.changeSelectedLayer(lv);      
       DC.APP.layerify(lv);
     },
     
@@ -315,7 +305,6 @@ AppController.js: Application Controller for the application
     var data = {pages:[]};
     DC.APP.project.pages = [];
     var pages = $("#application .page-container");
-    //console.log(pages);
     pages.each(function(idx, page) {
       page = $(page);
       var p = page.data();
@@ -325,7 +314,6 @@ AppController.js: Application Controller for the application
       layers.each(function(li, layer) {
         layer = $(layer);
         var l = layer.data();
-        //console.log(l);
         data.pages[idx].layers.push(DC.Layer.convert(l));
       });
       
@@ -339,16 +327,7 @@ AppController.js: Application Controller for the application
   DC.APP.reviseProject = function() {
     DC.db.openDoc(DC.APP.project._id, {
       success: function(data) {
-        //var pages = DC.APP.project.pages;
         _.extend(DC.APP.project, data);
-        //DC.APP.project.pages = pages;
-        // if (DC.APP.project._attachments) {
-        //   var att = DC.APP.project._attachments;
-        //   var rev = DC.APP.project._rev;
-        //   for (var f in att) {
-        //     _.extend(att[f], {stub: true, revpos: parseInt(rev, 10)});
-        //   }
-        // }
       }
     });
   };

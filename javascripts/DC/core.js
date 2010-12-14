@@ -25,7 +25,7 @@ core.js: Draw-Comic's namespace and global objects
   /*Namespace object DC*/
   window.DC = {};
   
-  DC.$ = $({});  // uh-oh! need to use jQ's eventing system
+  DC.$ = $({});  // for jQuery's eventing system
   
   DC.USER = {};
   
@@ -77,7 +77,7 @@ core.js: Draw-Comic's namespace and global objects
                 || data.rows) {
         var results = data.rows;
         _.each(results, function(row) {
-          //row.id, row.key, row.value[]
+          //row.id, row.key, []row.value
           _.each(row.value, function(imgsrc) {
             var image = {};
             image.url = (type === DC.UserUploadImageSearch ? DC.db.uri + row.id + "/" : "") + imgsrc;

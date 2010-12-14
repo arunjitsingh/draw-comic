@@ -93,11 +93,9 @@ DCAppLoad.js:
       cancel: function() {}
     });
     
-    // add a new page automatically
   });
   
   $("#open-project").click(function() {
-    // show open dialog
     $.showDialog("dialogs/open.html", {
       load: function(elt) {
         DC.APP.prepareProjectsList(elt);
@@ -183,6 +181,10 @@ DCAppLoad.js:
   
   
   $("#export-project").click(function() {
+    if ($("#application .page-container").length===0) {
+      DC.$.trigger("error", ["Can't Export", "Nothing to export"]);
+      return;
+    }
     DC.APP.trigger("export");
   });
   
@@ -215,11 +217,9 @@ DCAppLoad.js:
         return;
       }
       DC.APP.selectedLayer.drawable({enable:true});
-      //$('.button'). //DISABLE ALL OTHER BUTTONS
       $("#done-edit-layer").show();
       $("#edit-layer").hide();
     }
-    //DC.APP.selectedLayer.trigger("edit");
   });
   $("#done-edit-layer").click(function() {
     if (DC.APP.selectedLayer) {
@@ -231,7 +231,13 @@ DCAppLoad.js:
     if (DC.APP.selectedLayer) {
       DC.APP.selectedLayer.remove();
     }
-    //DC.APP.selectedLayer.trigger("delete");
+  });
+  $("#clear-layer").click(function() {
+    if (DC.APP.selectedLayer) {
+      var cvs = DC.APP.selectedLayer;
+      var ctx = cvs[0].getContext('2d');
+      ctx.clearRect(0,0,cvs.width(), cvs.height());
+    }
   });
 
   var form = $("#upload-form");
@@ -503,7 +509,6 @@ DCAppLoad.js:
     "new-project": function(evt) {
       $("#page-toolbar .toolbar").removeClass("hidden");
       $("#layer-toolbar .toolbar").removeClass("hidden");
-      //$("#project-toolbar .toolbar").addClass("hidden");
       DC.$.trigger("update-userCtx");
       DC.$.trigger("change-pid-hash");
     },

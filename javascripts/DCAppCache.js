@@ -20,7 +20,7 @@ DCAppCache.js: Application cache management
 (function() {
   var appCache = window.applicationCache;
   if (appCache) {
-    function handleCacheEvent(e) {
+    function handleCacheEvent(evt) {
       switch (appCache.status) {
         case appCache.UNCACHED: // UNCACHED == 0
           break;
