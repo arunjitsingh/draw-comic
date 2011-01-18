@@ -303,10 +303,6 @@ DCAppLoad.js:
       DC.$.trigger("error", ["Not Logged In", "Log in to see your uploads"]);
       return;
     }
-    if (!(DC.APP.project && DC.APP.selectedPage)) {
-      DC.$.trigger("error", ["Error", "Create a project & page first."]);
-      return false;
-    }
     $.showDialog('dialogs/user-uploads.html', {
       load: function(elt) {
         var elt = $(elt).find("#user-images");
@@ -315,6 +311,10 @@ DCAppLoad.js:
           key: DC.USER.name,
           success: DC.ImageSearchCallback(elt, function(args) {
             elt.find("img").dblclick(function() {
+              if (!(DC.APP.project && DC.APP.selectedPage)) {
+                DC.$.trigger("error", ["Can't add to Page", "Create a project & page first."]);
+                return false;
+              }
               var url = this.data.URL || this.src;
               DC.APP.trigger("addImage", [url, true]);
             });
@@ -329,10 +329,7 @@ DCAppLoad.js:
       DC.$.trigger("error", ["Not Logged In", "Log in to see your drawings"]);
       return;
     }
-    if (!(DC.APP.project && DC.APP.selectedPage)) {
-      DC.$.trigger("error", ["Error", "Create a project & page first."]);
-      return false;
-    }
+    
     $.showDialog('dialogs/user-uploads.html', {
       load: function(elt) {
         var elt = $(elt).find("#user-images");
@@ -341,6 +338,10 @@ DCAppLoad.js:
           key: DC.USER.name,
           success: DC.ImageSearchCallback(elt, function(args) {
             elt.find("img").dblclick(function() {
+              if (!(DC.APP.project && DC.APP.selectedPage)) {
+                DC.$.trigger("error", ["Error", "Create a project & page first."]);
+                return false;
+              }
               var url = this.data.URL || this.src;
               DC.APP.trigger("addImage", [url, true]);
             });
@@ -379,10 +380,7 @@ DCAppLoad.js:
       DC.$.trigger("error", ["Google Images Unavailable", "You are not connected to the internet"]);
       return;
     }
-    if (!(DC.APP.project && DC.APP.selectedPage)) {
-      DC.$.trigger("error", ["Can't Search", "Create a project & page first."]);
-      return false;
-    }
+    
     $.showDialog('dialogs/google.html', {
       
       submit: function(data, callback) {
@@ -396,6 +394,10 @@ DCAppLoad.js:
               return;
             }
             elt.find("img").dblclick(function() {
+              if (!(DC.APP.project && DC.APP.selectedPage)) {
+                callback({keyword:"Create a project & page first."});
+                return false;
+              }
               var url = this.data.URL || this.src;
               DC.APP.trigger("addImage", [url, true]);
               callback();
@@ -634,6 +636,11 @@ DCAppLoad.js:
   if (window.loadComplete) {
     window.loadComplete();
   }
+  
+  
+  $("#layer-shadow-toggle").click(function() {
+    $("#application .layer").toggleClass("no-shadow");
+  });
   
   // EXTREMELY DANGEROUS. YOU SHOULD NEVER DO THIS
   window.alert = function(what, isError) {

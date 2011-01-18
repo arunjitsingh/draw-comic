@@ -1,7 +1,8 @@
 CACHE MANIFEST
 #
 #### version 0.2.8
-# 2010=12=14 0000
+# Current revision: i
+# 2010=12=20 0000
 CACHE:
 #### MAIN APPLICATION ####
 index.html
@@ -11,8 +12,8 @@ resources/images/bg.png
 resources/fonts/Komika_Hand_Bold.ttf
 resources/fonts/RedFive.ttf
 resources/images/ADD.png
-resources/images/CLS.png
-resources/images/COLOR.png
+#resources/images/CLS.png
+#resources/images/COLOR.png
 resources/images/DEL.png
 resources/images/EDIT-DONE.png
 resources/images/EDIT.png
@@ -20,12 +21,12 @@ resources/images/FN.png
 resources/images/LAYER.png
 resources/images/LEFT.png
 resources/images/LOAD.png
-resources/images/LWID.png
+#resources/images/LWID.png
 resources/images/LY.png
 resources/images/NEW.png
 resources/images/PG.png
 resources/images/SAVE.png
-resources/images/TEXT.png
+#resources/images/TEXT.png
 resources/images/UP.png
 resources/images/WEB.png
 resources/images/DOWN.png
@@ -63,7 +64,7 @@ javascripts/_.mixins.js
 javascripts/jquery.plugins.js
 javascripts/google.js
 ## application scripts ##
-#javascripts/DC/core.js
+javascripts/DC/core.js
 javascripts/DC/AppController.js
 javascripts/DC/mvc/Project.js
 javascripts/DC/mvc/Page.js

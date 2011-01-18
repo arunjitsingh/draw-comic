@@ -107,15 +107,19 @@ AppController.js: Application Controller for the application
       DC.APP.selectedPage = to;
       to.addClass("selected");
     }
+    // also change selected layer
   };
   
   DC.APP.changeSelectedLayer = function(to) {
     var layer = DC.APP.selectedLayer;
-    if (!layer || !(layer[0]._uid === to[0]._uid)) {
+    if (!(layer && layer[0]._uid === to[0]._uid)) {
       $('.layer.selected').removeClass('selected');
       DC.APP.selectedLayer = to;
       to.addClass("selected");
       DC.$.trigger("layer-changed");
+      if (layer && layer.hasClass("drawable")) {
+        layer.drawable({disable:true});
+      }
     }
   };
   
@@ -126,17 +130,19 @@ AppController.js: Application Controller for the application
   };
   
   DC.APP.layerify = function(view) {
+    var dragged = function() {
+      var node = $(this);
+      var data = node.data();
+      data.x = node.position().left;
+      data.y = node.position().top;
+      node.data(data);
+      
+      DC.APP.changeSelectedLayer($(this));
+      
+    };
     view.draggable({
-      stop: function() {
-        var node = $(this);
-        var data = node.data();
-        data.x = node.position().left;
-        data.y = node.position().top;
-        node.data(data);
-        
-        DC.APP.changeSelectedLayer($(this));
-        
-      }
+      start: dragged,
+      stop: dragged
     });
     view.bind('click.DCLayerSelect', function() {
       DC.APP.changeSelectedLayer($(this));
@@ -174,11 +180,13 @@ AppController.js: Application Controller for the application
             } else {
               DC.$.trigger("error", 
                         ["Couldn't load the project", "Project doesn't exist"]);
+              DC.$.trigger("change-pid-hash");
             }
           },
           error: function(status, error, reason) {
             DC.$.trigger("error", 
                       ["Couldn't load the project", "Project doesn't exist", [reason, status, error]]);
+            DC.$.trigger("change-pid-hash");
           }
         });
       } else {
@@ -302,6 +310,11 @@ AppController.js: Application Controller for the application
   
   
   DC.APP.processForSaving = function() {
+    // close all layers
+    var layer = DC.APP.selectedLayer;
+    if (layer && layer.hasClass("drawable")) {
+      layer.drawable({disable:true});
+    }
     var data = {pages:[]};
     DC.APP.project.pages = [];
     var pages = $("#application .page-container");

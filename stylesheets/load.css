@@ -50,7 +50,7 @@ body {
   position: fixed; top: 0; left: 0;
   width: 100%; height: 100%;
   z-index: 11999;
-  background-color: rgba(0,0,0,1);
+  background-color: #444;
   -webkit-transition: background-color 150ms;
 }
 #dc-overlay.hidden {
@@ -71,21 +71,21 @@ body {
 }
 #info {
   position: absolute;
-  width: 700px; left:50%; margin-left: -366px;
+  width: 700px; left:50%; margin-left: -367px;
   height: 300px; top:150px;
   padding: 20px 20px 0px 20px;
   border-radius: 15px;
   -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
-  box-shadow: 0 0 15px #000;
-  -webkit-box-shadow: 0 0 15px #000;
-  -moz-box-shadow: 0 0 15px #000;
+  box-shadow: 0 0 15px #000, inset 0 0 5px #000;
+  -webkit-box-shadow: 0 0 15px #000, inset 0 0 5px #000;
+  -moz-box-shadow: 0 0 15px #000, inset 0 0 5px #000;
   background-color: rgba(255, 255, 255, 0.75);
   background-image: -webkit-gradient(linear, left top, left bottom,
                                from(rgba(51,51,68,0.9)),
                                to(rgba(0,0,0,0.9)));
   background: -moz-linear-gradient(-90deg, #334, #000);
-  border: 2px solid #fff;
+  border: 4px solid #fff;
   text-align: center;
   z-index: 12000;
 }
@@ -141,4 +141,19 @@ body {
 }
 #info #help .help-footer {
   font-size: 12px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  -webkit-border-radius: 5px;
+  
+}
+::-webkit-scrollbar-thumb:vertical {
+  background-color: rgba(0,0,0,0.75);
+  background-image: -webkit-gradient(linear, left top, right top,
+                                   from(transparent),
+                                   color-stop(0.35, transparent),
+                                   color-stop(0.50, rgba(255,255,255,0.1)),
+                                   to(rgba(255,255,255,0.2)));
+  -webkit-border-radius: 5px;
 }

@@ -20,14 +20,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <html manifest="dc-v0.2x.manifest">
 <head>
   <meta charset="utf-8">
-  <title>DRAW&#x25CF;COMIC | v0.2 [g]</title>
+  <title>DRAW&#x25CF;COMIC | v0.2 [i]</title>
   <link rel="stylesheet" href="stylesheets/load.css">
 </head>
 <body>
   <div id="dc-overlay"></div>
   <div id="info">
     <span class="close-button clickable" style="display:none">x</span>
-    <h1 class="draw-comic">Draw&#x25CF;Comic</h1>
+    <h1 class="draw-comic">DRAW&#x25CF;COMIC</h1>
     <div id="loader"><img src="resources/images/loader.gif"></div>
     <div id="info-sub">
       <noscript><h4>Please enable JavaScript and Stylesheets</h4></noscript>
@@ -36,7 +36,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   <script src="javascripts/vendor/modernizr.js"></script>
   <script src="javascripts/vendor/jquery/base.js"></script>
   <script>
-      if (!Modernizr.canvas || !$.browser.webkit || !window.localStorage) {
+      if (!(
+          /*REQUIRED FEATURES*/
+          Modernizr.canvas 
+          && Modernizr.fontface
+          && Modernizr.rgba
+          && Modernizr.localstorage
+          && Modernizr.csstransitions
+          && Modernizr.cssgradients
+          && Modernizr.boxshadow
+          && Modernizr.hashchange
+          && $.browser.webkit)
+          || (/mobile|android|blackberry/).test(navigator.userAgent)) {
         Sexy.html('canvas-error.html', function(res) {
           $("#info-sub").empty().append($(res));
           $("#info #loader").hide();
