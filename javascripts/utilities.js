@@ -199,7 +199,7 @@ if (!String.partition) {
       l = p.length,
       idx = 0;
     for (var i = 0; i < l-1; ++i) {
-      idx += p[i];
+      idx += p[i] + i;
       words.splice(idx, 0, "\n");
     }
     return words.join(" ");
